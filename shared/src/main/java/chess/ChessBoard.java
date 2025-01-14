@@ -9,7 +9,10 @@ package chess;
 public class ChessBoard {
 
     public ChessBoard() {
-        
+        /** array of arrays 8x8
+         * should it be filled or empty?? **/
+        String[][] board = new String[8][8];
+
     }
 
     /**
