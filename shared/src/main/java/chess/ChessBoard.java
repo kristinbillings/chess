@@ -76,6 +76,5 @@ public class ChessBoard {
         addPiece(new ChessPosition(6,6),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
         addPiece(new ChessPosition(6,7),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
 
-
     }
 }
