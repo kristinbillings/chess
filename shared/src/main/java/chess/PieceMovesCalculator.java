@@ -99,7 +99,7 @@ public interface PieceMovesCalculator {
         for (int i = 0; i < pieceMovements.length; i++) {
             ChessPosition possibleMove = new ChessPosition(pieceMovements[i][0] + myPosition.getRow(), pieceMovements[i][1] + myPosition.getColumn());
             //checks that the movement is on the board
-            if (possibleMove.getRow() >= 1 && possibleMove.getRow() <= 8 && possibleMove.getColumn() >= 1 && possibleMove.getColumn() <= 8) {
+            if (possibleMove.getRow() >= 0 && possibleMove.getRow() <= 7 && possibleMove.getColumn() >= 0 && possibleMove.getColumn() <= 7) {
                 //checks to see if the position is empty
                 if (board.getPiece(possibleMove) == null) {
                     //if the piece can jump (knight), then immediately add position
@@ -115,13 +115,15 @@ public interface PieceMovesCalculator {
                     ChessGame.TeamColor typeAtNewLocation = (board.getPiece(possibleMove)).getTeamColor();
 
                     if (currentType != typeAtNewLocation) {
-
+                        if (canJump()) {
+                            pieceMoves.add(new ChessMove(myPosition, possibleMove, null));
+                        } else if (isPathClear(board,myPosition,possibleMove)) {
+                            pieceMoves.add(new ChessMove(myPosition, possibleMove, null));
+                        }
                     }
                 }
             }
         }
-
-
         return pieceMoves;
     }
 
