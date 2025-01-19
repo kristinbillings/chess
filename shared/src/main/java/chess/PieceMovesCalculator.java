@@ -2,26 +2,21 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public interface PieceMovesCalculator {
     default int[][] moveDirections() {
         return null;
     }
 
-    //tells whether the piece type can ignore other pieces in its way or not
-    default boolean canJump() {
-        return false;
-    }
-
+    //tells if the piece can move more square (Queen, Bishop, Tower)
     default boolean canMoveALot() {
         return false;
     }
 
-    private boolean checkIfSpaceOccupied(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
+    private boolean checkIfSpaceOccupiedOrValid(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
         boolean isValid = false;
 
-        if (position.getRow() >= 0 && position.getRow() <= 7 && position.getColumn() >= 0 && position.getColumn() <= 7) {
+        if (position.getRow() >= 1 && position.getRow() <= 8 && position.getColumn() >= 1 && position.getColumn() <= 8) {
             if (board.getPiece(position) == null) {
                 isValid = true;
             } else if (color != (board.getPiece(position)).getTeamColor()) {
@@ -44,21 +39,31 @@ public interface PieceMovesCalculator {
         for (int i = 0; i < pieceMovements.length; i++) {
             ChessPosition endPosition = new ChessPosition(pieceMovements[i][0] + myPosition.getRow(), pieceMovements[i][1] + myPosition.getColumn());
             //checks that the movement is on the board
-            int bruh = pieceMovements[i][0];
+            ChessGame.TeamColor currentColor = (board.getPiece(myPosition)).getTeamColor();
 
             if (canMoveALot()) {
+                boolean stillGoing = true;
+                while (stillGoing) {
+                    if (checkIfSpaceOccupiedOrValid(board, endPosition, currentColor)) {
+                        pieceMoves.add(new ChessMove(myPosition, endPosition, null));
 
+                        //checks to see if captured piece, then also stops loop
+                        if (board.getPiece(endPosition) != null) {
+                            if (currentColor != (board.getPiece(endPosition)).getTeamColor()) {
+                                stillGoing = false;
+                            }
+                        }
+                        endPosition = new ChessPosition(pieceMovements[i][0] + endPosition.getRow(), pieceMovements[i][1] + endPosition.getColumn());
+                    } else {
+                        stillGoing = false;
+                    }
+                }
             } else {
                 //check to see if position can be used
-                ChessGame.TeamColor currentColor = (board.getPiece(myPosition)).getTeamColor();
-                if (checkIfSpaceOccupied(board, endPosition, currentColor)) {
+                if (checkIfSpaceOccupiedOrValid(board, endPosition, currentColor)) {
                     pieceMoves.add(new ChessMove(myPosition, endPosition, null));
                 }
-                //if true add to pieceMoves
-
             }
-
-
         }
         return pieceMoves;
     }

@@ -10,4 +10,9 @@ public class BishopMovesCalculator implements PieceMovesCalculator {
                 {-1,-1}
         };
     }
+
+    @Override
+    public boolean canMoveALot() {
+        return true;
+    }
 }
