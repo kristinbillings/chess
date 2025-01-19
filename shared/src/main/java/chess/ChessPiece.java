@@ -58,7 +58,7 @@ public class ChessPiece {
         if (getPieceType() == PieceType.KING) {
             moveCalc = new KingMovesCalculator();
         } else if (getPieceType() == PieceType.QUEEN) {
-            moveCalc = null;
+            moveCalc = new QueenMovesCalculator();
         } else if (getPieceType() == PieceType.BISHOP) {
             moveCalc = new BishopMovesCalculator();
         }
