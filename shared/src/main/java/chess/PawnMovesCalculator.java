@@ -15,11 +15,13 @@ public class PawnMovesCalculator implements PieceMovesCalculator{
         return isValid;
     }
 
-    private boolean checkOppositeColor(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
+    private boolean checkOppositeColorAndValid(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
         boolean isValid = false;
         if (board.getPiece(position) != null) {
-            if (color != (board.getPiece(position)).getTeamColor()) {
-                isValid = true;
+            if (position.getRow() >= 1 && position.getRow() <= 8 && position.getColumn() >= 1 && position.getColumn() <= 8) {
+                if (color != (board.getPiece(position)).getTeamColor()) {
+                    isValid = true;
+                }
             }
         }
         return isValid;
@@ -77,10 +79,10 @@ public class PawnMovesCalculator implements PieceMovesCalculator{
         ChessPosition captureEnd1 = new ChessPosition(captureMovements[0][0] + myPosition.getRow(), captureMovements[0][1] + myPosition.getColumn());
         ChessPosition captureEnd2 = new ChessPosition(captureMovements[1][0] + myPosition.getRow(), captureMovements[1][1] + myPosition.getColumn());
 
-        if(checkIfSpaceOccupiedOrInBoard(board, captureEnd1) && checkOppositeColor(board, captureEnd1, currentColor)) {
+        if(checkOppositeColorAndValid(board, captureEnd1, currentColor)) {
             pieceMoves.add(new ChessMove(myPosition, captureEnd1, null));
         }
-        if(checkIfSpaceOccupiedOrInBoard(board, captureEnd2) && checkOppositeColor(board, captureEnd2, currentColor)) {
+        if(checkOppositeColorAndValid(board, captureEnd2, currentColor)) {
             pieceMoves.add(new ChessMove(myPosition, captureEnd2, null));
         }
 
