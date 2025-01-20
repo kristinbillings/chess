@@ -54,7 +54,6 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         PieceMovesCalculator moveCalc = null;
 
-
         if (getPieceType() == PieceType.KING) {
             moveCalc = new KingMovesCalculator();
         } else if (getPieceType() == PieceType.QUEEN) {
@@ -65,6 +64,8 @@ public class ChessPiece {
             moveCalc = new KnightMovesCalculator();
         } else if  (getPieceType() == PieceType.ROOK) {
             moveCalc = new RookMovesCalculator();
+        } else if (getPieceType() == PieceType.PAWN) {
+            moveCalc = new PawnMovesCalculator();
         }
 
         return moveCalc.pieceMoves(board, myPosition);
