@@ -17,8 +17,8 @@ public class PawnMovesCalculator implements PieceMovesCalculator{
 
     private boolean checkOppositeColorAndValid(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
         boolean isValid = false;
-        if (board.getPiece(position) != null) {
-            if (position.getRow() >= 1 && position.getRow() <= 8 && position.getColumn() >= 1 && position.getColumn() <= 8) {
+        if (position.getRow() >= 1 && position.getRow() <= 8 && position.getColumn() >= 1 && position.getColumn() <= 8) {
+            if (board.getPiece(position) != null) {
                 if (color != (board.getPiece(position)).getTeamColor()) {
                     isValid = true;
                 }
