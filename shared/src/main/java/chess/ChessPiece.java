@@ -52,21 +52,15 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        PieceMovesCalculator moveCalc = null;
 
-        if (getPieceType() == PieceType.KING) {
-            moveCalc = new KingMovesCalculator();
-        } else if (getPieceType() == PieceType.QUEEN) {
-            moveCalc = new QueenMovesCalculator();
-        } else if (getPieceType() == PieceType.BISHOP) {
-            moveCalc = new BishopMovesCalculator();
-        } else if  (getPieceType() == PieceType.KNIGHT) {
-            moveCalc = new KnightMovesCalculator();
-        } else if  (getPieceType() == PieceType.ROOK) {
-            moveCalc = new RookMovesCalculator();
-        } else if (getPieceType() == PieceType.PAWN) {
-            moveCalc = new PawnMovesCalculator();
-        }
+        PieceMovesCalculator moveCalc = switch(getPieceType()) {
+            case KING -> new KingMovesCalculator();
+            case QUEEN -> new QueenMovesCalculator();
+            case BISHOP -> new BishopMovesCalculator();
+            case KNIGHT -> new KnightMovesCalculator();
+            case ROOK -> new RookMovesCalculator();
+            case PAWN -> new PawnMovesCalculator();
+        };
 
         return moveCalc.pieceMoves(board, myPosition);
     }
