@@ -13,7 +13,7 @@ public interface PieceMovesCalculator {
         return false;
     }
 
-    private boolean checkIfSpaceOccupiedOrValid(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
+    default boolean checkIfSpaceOccupiedOrValid(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
         boolean isValid = false;
 
         if (position.getRow() >= 1 && position.getRow() <= 8 && position.getColumn() >= 1 && position.getColumn() <= 8) {
