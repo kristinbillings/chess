@@ -14,6 +14,7 @@ public class QueenMovesCalculator implements PieceMovesCalculator {
                 {1,-1},     //8
         };
     }
+
     @Override
     public boolean canMoveALot() {
         return true;

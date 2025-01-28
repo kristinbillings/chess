@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class PawnMovesCalculator implements PieceMovesCalculator{
+    //returns a collection of 4 chess moves that are the same except for the promotion piece
     private Collection<ChessMove> promotions(ChessPosition start, ChessPosition end) {
         Collection<ChessMove> pieceMoves = new ArrayList<>();
 
