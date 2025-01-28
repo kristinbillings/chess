@@ -4,67 +4,66 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public interface PieceMovesCalculator {
-    default int[][] moveDirections() {
+    default int[][] moveDirections(){
         return null;
     }
 
-    //tells if the piece can move more square (Queen, Bishop, Tower)
     default boolean canMoveALot() {
         return false;
     }
 
-    default boolean checkIfSpaceOccupiedOrValid(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
-        boolean isValid = false;
-
-        if (position.getRow() >= 1 && position.getRow() <= 8 && position.getColumn() >= 1 && position.getColumn() <= 8) {
-            if (board.getPiece(position) == null) {
-                isValid = true;
-            } else if (color != (board.getPiece(position)).getTeamColor()) {
-                isValid = true;
-            }
+    default boolean checkIfOnBoard(ChessPosition position) {
+        if (position.getRow() >=1 && position.getRow() <=8 && position.getColumn() >=1 && position.getColumn()<=8) {
+            return true;
+        } else {
+            return false;
         }
-        return isValid;
     }
 
-    /**
-     * checks whether the path of the piece is clear or obstructed
-     * this is to see if a movement is valid or not
-     */
+    default boolean checkIfEmpty(ChessBoard board, ChessPosition myPosition) {
+        if(board.getPiece(myPosition) == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    default public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+    default boolean checkOppositeColor(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
+        if(board.getPiece(position).getTeamColor() == color) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    default Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> pieceMoves = new ArrayList<>();
+        ChessGame.TeamColor currentColor = board.getPiece(myPosition).getTeamColor();
+        int[][] possibleMovements = moveDirections();
 
-        int[][] pieceMovements = moveDirections();
+        for (int i = 0; i < possibleMovements.length; i++) {
+            ChessPosition endPosition = new ChessPosition(myPosition.getRow()+possibleMovements[i][0], myPosition.getColumn()+possibleMovements[i][1]);
+            boolean keepGoing = true;
 
-        for (int i = 0; i < pieceMovements.length; i++) {
-            ChessPosition endPosition = new ChessPosition(pieceMovements[i][0] + myPosition.getRow(), pieceMovements[i][1] + myPosition.getColumn());
-            //checks that the movement is on the board
-            ChessGame.TeamColor currentColor = (board.getPiece(myPosition)).getTeamColor();
-
-            if (canMoveALot()) {
-                boolean stillGoing = true;
-                while (stillGoing) {
-                    if (checkIfSpaceOccupiedOrValid(board, endPosition, currentColor)) {
+            while(keepGoing) {
+                keepGoing = canMoveALot();
+                if (checkIfOnBoard(endPosition)) {
+                    if (checkIfEmpty(board, endPosition)) {
                         pieceMoves.add(new ChessMove(myPosition, endPosition, null));
-
-                        //checks to see if captured piece, then also stops loop
-                        if (board.getPiece(endPosition) != null) {
-                            if (currentColor != (board.getPiece(endPosition)).getTeamColor()) {
-                                stillGoing = false;
-                            }
-                        }
-                        endPosition = new ChessPosition(pieceMovements[i][0] + endPosition.getRow(), pieceMovements[i][1] + endPosition.getColumn());
+                        endPosition = new ChessPosition(endPosition.getRow()+possibleMovements[i][0], endPosition.getColumn()+possibleMovements[i][1]);
+                    } else if (checkOppositeColor(board, endPosition, currentColor)) {
+                        pieceMoves.add(new ChessMove(myPosition, endPosition, null));
+                        keepGoing = false;
                     } else {
-                        stillGoing = false;
+                        keepGoing = false;
                     }
-                }
-            } else {
-                //check to see if position can be used
-                if (checkIfSpaceOccupiedOrValid(board, endPosition, currentColor)) {
-                    pieceMoves.add(new ChessMove(myPosition, endPosition, null));
+                } else {
+                    keepGoing = false;
                 }
             }
         }
+
+
         return pieceMoves;
     }
 }
