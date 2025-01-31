@@ -17,6 +17,20 @@ public class ChessGame {
         board.resetBoard();
     }
 
+    private ChessPosition wheresKing(TeamColor teamColor) {
+        ChessPosition kingPosition = null;
+
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                ChessPosition position = new ChessPosition(i,j);
+                ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
+                if (board.getPiece(position).getPieceType() == ChessPiece.PieceType.KING && spaceColor == teamColor) {
+                    kingPosition = position;
+                }
+            }
+        }
+        return kingPosition;
+    }
     /**
      * @return Which team's turn it is
      */
@@ -53,7 +67,15 @@ public class ChessGame {
         TeamColor currentColor = getBoard().getPiece(startPosition).getTeamColor();
         ChessPiece.PieceType type = getBoard().getPiece(startPosition).getPieceType();
 
-        Collection<ChessMove> possibleMoves = new ChessPiece(currentColor, type).pieceMoves(getBoard(),startPosition);
+        if (type == null) {
+            return null;
+        }
+
+        Collection<ChessMove> possibleMoves = new ChessPiece(currentColor,type).pieceMoves(getBoard(),startPosition);
+
+        for(int i = 0; i < possibleMoves.size(); i++) {
+            return null; //still need to implement this
+        }
 
         return validMoves;
     }
@@ -75,7 +97,10 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPosition kingPosition = wheresKing(teamColor);
+
+
+
     }
 
     /**
