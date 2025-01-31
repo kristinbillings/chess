@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -20,12 +21,14 @@ public class ChessGame {
     private ChessPosition wheresKing(TeamColor teamColor) {
         ChessPosition kingPosition = null;
 
-        for (int i = 0; i < 8; i++){
-            for (int j = 0; j < 8; j++){
+        for (int i = 1; i <= 8; i++){
+            for (int j = 1; j <= 8; j++){
                 ChessPosition position = new ChessPosition(i,j);
-                ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
-                if (board.getPiece(position).getPieceType() == ChessPiece.PieceType.KING && spaceColor == teamColor) {
-                    kingPosition = position;
+                if(board.getPiece(position) != null) {
+                    ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
+                    if (board.getPiece(position).getPieceType() == ChessPiece.PieceType.KING && spaceColor == teamColor) {
+                        kingPosition = position;
+                    }
                 }
             }
         }
@@ -98,9 +101,24 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition kingPosition = wheresKing(teamColor);
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 8; j++) {
+                ChessPosition position = new ChessPosition(i,j);
+                if(board.getPiece(position) != null) {
+                    ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
+                    ChessPiece.PieceType type = board.getPiece(position).getPieceType();
 
+                    if (spaceColor != teamColor) {
+                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
 
-
+                        if (possibleMoves.contains(new ChessMove(position,kingPosition,null))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -141,4 +159,30 @@ public class ChessGame {
     public ChessBoard getBoard() {
         return board;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return teamTurn == chessGame.teamTurn && Objects.equals(board, chessGame.board);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessGame{" +
+                "teamTurn=" + teamTurn +
+                ", board=" + board +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamTurn, board);
+    }
+
 }
