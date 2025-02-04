@@ -194,7 +194,40 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPosition kingPosition = wheresKing(teamColor);
+
+        if(!isInCheck(teamColor)) {
+            //but no legal moves, aka all moves put time into check
+            for (int i = 1; i <= 8; i++) {
+                for (int j = 1; j <= 8; j++) {
+                    ChessPosition position = new ChessPosition(i,j);
+                    if(board.getPiece(position) != null) {
+                        ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
+                        ChessPiece.PieceType type = board.getPiece(position).getPieceType();
+
+                        if (spaceColor == teamColor) {
+                            Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor, type).pieceMoves(getBoard(), position);
+                            for (ChessMove move : possibleMoves) {
+                                //deepcopy board
+                                ChessBoard boardCopy = new ChessBoard().clone();
+                                //make the move with makeMove()
+                                boardCopy.addPiece(move.getStartPosition(), null);
+                                boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
+                                //ckeck to see if the king is safe when other piece moves
+                                if (isKingSafe(kingPosition, teamColor)) {
+                                    return false;
+                                    //\check to see if king safe when king moves
+                                } //else if(type == ChessPiece.PieceType.KING && isKingSafe(move.getEndPosition(),teamColor)) {
+                                //return false;
+                                //}
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
