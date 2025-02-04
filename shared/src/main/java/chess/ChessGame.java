@@ -99,7 +99,7 @@ public class ChessGame {
 
         Collection<ChessMove> possibleMoves = new ChessPiece(currentColor,type).pieceMoves(getBoard(),startPosition);
 
-        //for(int i = 0; i < possibleMoves.size(); i++) {
+        //for(ChessMove move : possibleMoves) {
             //return null; //still need to implement this
         //}
 
@@ -144,20 +144,6 @@ public class ChessGame {
         return true;
     }
 
-    //returns true if no
-    private boolean kingMoveToSafeSpace(ChessPosition kingPosition, TeamColor color) {
-        PieceMovesCalculator moveCalc = new KingMovesCalculator();
-        Collection<ChessMove> possibleKingMoves = moveCalc.pieceMoves(board, kingPosition);
-
-        for(ChessMove move : possibleKingMoves) {
-            //deepcopy board
-            //make the move with makeMove()
-            //ckeck to see if the king is safe at that new position
-            //if he is safe, continue, else return false
-        }
-        return true;
-    }
-
     /**
      * Determines if the given team is in checkmate
      *
@@ -167,12 +153,7 @@ public class ChessGame {
     public boolean isInCheckmate(TeamColor teamColor) {
         ChessPosition kingPosition = wheresKing(teamColor);
 
-        //check if king can move to a safe space then return false
-        if(kingMoveToSafeSpace(kingPosition, teamColor)) {
-            return false;
-        }
-
-        //check if other piece can block path
+        //check if other piece can block path or king can move
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
                 ChessPosition position = new ChessPosition(i, j);
@@ -185,17 +166,22 @@ public class ChessGame {
                         Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
                         for(ChessMove move : possibleMoves) {
                             //deepcopy board
+                            ChessBoard boardCopy = new ChessBoard().clone();
                             //make the move with makeMove()
-                            //ckeck to see if the king is safe at that new position
-                            //if he is not safe, continue, else return false
-                            //at the very end retrun true (would have returned false if not in checkmate)
-
+                            boardCopy.addPiece(move.getStartPosition(), null);
+                            boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
+                            //ckeck to see if the king is safe when other piece moves
+                            if(type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor)) {
+                                return false;
+                            //\check to see if king safe when king moves
+                            } //else if(type == ChessPiece.PieceType.KING && isKingSafe(move.getEndPosition(),teamColor)) {
+                                //return false;
+                            //}
                         }
                     }
                 }
             }
         }
-
 
         return true;
     }

@@ -9,12 +9,11 @@ import java.util.Objects;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
-public class ChessBoard {
+public class ChessBoard implements Cloneable {
     //this is the array aka the board
     private ChessPiece[][] squares = new ChessPiece[8][8];
     public ChessBoard() {
-        /** array of arrays 8x8
-         * should it be filled or empty?? **/
+        /** array of arrays 8x8 **/
     }
 
     /**
@@ -80,6 +79,28 @@ public class ChessBoard {
         addPiece(new ChessPosition(7,8),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
 
     }
+
+    @Override
+    public ChessBoard clone() {
+        try {
+            ChessBoard clone = (ChessBoard) super.clone();
+
+            ChessPiece[][] cloneSquares = new ChessPiece[8][8];
+            for (int i = 1; i <= 8; i++) {
+                for (int j = 1; j <= 8; j++) {
+                    ChessPosition position = new ChessPosition(i, j);
+                    clone.addPiece(position, getPiece(position));
+                }
+            }
+
+            clone.squares = cloneSquares;
+
+            return clone;
+        } catch(CloneNotSupportedException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
