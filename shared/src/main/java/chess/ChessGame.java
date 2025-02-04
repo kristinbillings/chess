@@ -57,6 +57,28 @@ public class ChessGame {
         return true;
     }
 
+    //returns false if king not safe
+    private boolean checkKingMoves(ChessPosition kingPosition, ChessGame.TeamColor teamColor, ChessBoard boardCopy) {
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 8; j++) {
+                ChessPosition position = new ChessPosition(i,j);
+                if(boardCopy.getPiece(position) != null) {
+                    ChessGame.TeamColor spaceColor = boardCopy.getPiece(position).getTeamColor();
+                    ChessPiece.PieceType type = boardCopy.getPiece(position).getPieceType();
+
+                    if (spaceColor != teamColor) {
+                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
+
+                        if (possibleMoves.contains(new ChessMove(position,kingPosition,null))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * @return Which team's turn it is
      */
@@ -173,10 +195,10 @@ public class ChessGame {
                             //ckeck to see if the king is safe when other piece moves
                             if(type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor)) {
                                 return false;
-                            //\check to see if king safe when king moves
-                            } //else if(type == ChessPiece.PieceType.KING && isKingSafe(move.getEndPosition(),teamColor)) {
-                                //return false;
-                            //}
+                            //check to see if king safe when king moves
+                            } else if(type == ChessPiece.PieceType.KING && !checkKingMoves(move.getEndPosition(),teamColor,boardCopy)) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -214,12 +236,12 @@ public class ChessGame {
                                 boardCopy.addPiece(move.getStartPosition(), null);
                                 boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
                                 //ckeck to see if the king is safe when other piece moves
-                                if (isKingSafe(kingPosition, teamColor)) {
+                                if (type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor)) {
                                     return false;
                                     //\check to see if king safe when king moves
-                                } //else if(type == ChessPiece.PieceType.KING && isKingSafe(move.getEndPosition(),teamColor)) {
-                                //return false;
-                                //}
+                                } else if(type == ChessPiece.PieceType.KING && !checkKingMoves(move.getEndPosition(),teamColor,boardCopy)) {
+                                    return false;
+                                }
                             }
                         }
                     }
