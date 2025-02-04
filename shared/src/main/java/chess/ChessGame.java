@@ -34,6 +34,28 @@ public class ChessGame {
         }
         return kingPosition;
     }
+
+    private boolean isKingSafe(ChessPosition kingPosition, TeamColor teamColor){
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 8; j++) {
+                ChessPosition position = new ChessPosition(i,j);
+                if(board.getPiece(position) != null) {
+                    ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
+                    ChessPiece.PieceType type = board.getPiece(position).getPieceType();
+
+                    if (spaceColor != teamColor) {
+                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
+
+                        if (possibleMoves.contains(new ChessMove(position,kingPosition,null))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * @return Which team's turn it is
      */
@@ -101,24 +123,27 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition kingPosition = wheresKing(teamColor);
+        if(isKingSafe(kingPosition,teamColor)){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkKingMovements(ChessPosition kingPosition, TeamColor color) {
+        PieceMovesCalculator moveCalc = new KingMovesCalculator();
+        Collection<ChessMove> possibleKingMoves = moveCalc.pieceMoves(board, kingPosition);
+
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
-                ChessPosition position = new ChessPosition(i,j);
-                if(board.getPiece(position) != null) {
-                    ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
-                    ChessPiece.PieceType type = board.getPiece(position).getPieceType();
-
-                    if (spaceColor != teamColor) {
-                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
-
-                        if (possibleMoves.contains(new ChessMove(position,kingPosition,null))) {
-                            return true;
-                        }
+                ChessPosition position = new ChessPosition(i, j);
+                if(possibleKingMoves.contains(new ChessMove(kingPosition, position, ChessPiece.PieceType.KING))) {
+                    if(!isKingSafe(position, color)) {
+                        return false;
                     }
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -128,7 +153,17 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPosition kingPosition = wheresKing(teamColor);
+
+        //check if king can move to a safe space
+        if(!checkKingMovements(kingPosition, teamColor)) {
+            return false;
+        }
+
+        //check if other piece can block path
+
+
+        return true;
     }
 
     /**
