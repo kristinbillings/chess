@@ -35,9 +35,16 @@ public class ChessGame {
         return kingPosition;
     }
 
-    //private boolean checkBoardSpace() {
+    private boolean checkBoardSpace(TeamColor spaceCol, TeamColor color, ChessPiece.PieceType type, ChessPosition pos, ChessPosition kingPos) {
+        if (spaceCol != color) {
+            Collection<ChessMove> possibleMoves = new ChessPiece(spaceCol,type).pieceMoves(getBoard(),pos);
 
-    //}
+            if (possibleMoves.contains(new ChessMove(pos,kingPos,null))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     //returns false if the king is not safe
     private boolean isKingSafe(ChessPosition kingPosition, TeamColor teamColor, ChessBoard myBoard){
@@ -48,12 +55,8 @@ public class ChessGame {
                     ChessGame.TeamColor spaceColor = myBoard.getPiece(position).getTeamColor();
                     ChessPiece.PieceType type = myBoard.getPiece(position).getPieceType();
 
-                    if (spaceColor != teamColor) {
-                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
-
-                        if (possibleMoves.contains(new ChessMove(position,kingPosition,null))) {
-                            return false;
-                        }
+                    if (!checkBoardSpace(spaceColor, teamColor, type, position, kingPosition)) {
+                        return false;
                     }
                 }
             }
@@ -96,10 +99,6 @@ public class ChessGame {
         Collection<ChessMove> validMoves = new ArrayList<>();
         TeamColor currentColor = getBoard().getPiece(startPosition).getTeamColor();
         ChessPiece.PieceType type = getBoard().getPiece(startPosition).getPieceType();
-
-        //if (type == null) {
-        //  return null;
-        //}
 
         Collection<ChessMove> possibleMoves = new ChessPiece(currentColor,type).pieceMoves(getBoard(),startPosition);
 
