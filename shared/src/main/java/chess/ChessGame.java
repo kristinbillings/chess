@@ -115,9 +115,9 @@ public class ChessGame {
         TeamColor currentColor = getBoard().getPiece(startPosition).getTeamColor();
         ChessPiece.PieceType type = getBoard().getPiece(startPosition).getPieceType();
 
-        if (type == null) {
-            return null;
-        }
+        //if (type == null) {
+          //  return null;
+        //}
 
         Collection<ChessMove> possibleMoves = new ChessPiece(currentColor,type).pieceMoves(getBoard(),startPosition);
 
@@ -127,8 +127,12 @@ public class ChessGame {
             ChessPiece ogStart = board.getPiece(move.getStartPosition());
             ChessPiece ogEnd = board.getPiece(move.getEndPosition());
             //change to the move
+            ChessPiece.PieceType pieceType = move.getPromotionPiece();
+            if (pieceType == null) {
+                pieceType = board.getPiece(move.getStartPosition()).getPieceType();
+            }
             board.addPiece(move.getStartPosition(), null);
-            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), type));
+            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), pieceType));
 
             if(type != ChessPiece.PieceType.KING) {
                 if (!isInCheck(currentColor) && !isInCheckmate(currentColor)) {
@@ -166,13 +170,13 @@ public class ChessGame {
         Collection<ChessMove> moves = validMoves(move.getStartPosition());
 
         if (moves.contains(move)) {
-            ChessPiece.PieceType promo = move.getPromotionPiece();
-            if (promo == null) {
-                promo = board.getPiece(move.getStartPosition()).getPieceType();
+            ChessPiece.PieceType pieceType = move.getPromotionPiece();
+            if (pieceType == null) {
+                pieceType = board.getPiece(move.getStartPosition()).getPieceType();
             }
 
             board.addPiece(move.getStartPosition(),null);
-            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), promo));
+            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), pieceType));
         } else {
             throw new InvalidMoveException("Move not valid");
         }
