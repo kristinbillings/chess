@@ -185,6 +185,30 @@ public class ChessGame {
         return true;
     }
 
+    //helper for isInCheckmate, makes deep copy of all moves and sees if king is still safe
+    private boolean checkIfSameColor(ChessPosition position, TeamColor teamColor, ChessPosition kingPosition) {
+        ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
+        ChessPiece.PieceType type = board.getPiece(position).getPieceType();
+
+        if (spaceColor == teamColor) {
+            Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
+            for(ChessMove move : possibleMoves) {
+                //deepcopy board
+                ChessBoard boardCopy = new ChessBoard().clone();
+                boardCopy.addPiece(move.getStartPosition(), null);
+                boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
+                //ckeck to see if the king is safe when other piece moves
+                if(type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor,board)) {
+                    return false;
+                    //check to see if king safe when king moves
+                } else if(type == ChessPiece.PieceType.KING && !isKingSafe(move.getEndPosition(),teamColor,boardCopy)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * Determines if the given team is in checkmate
      *
@@ -200,24 +224,8 @@ public class ChessGame {
                 ChessPosition position = new ChessPosition(i, j);
 
                 if(board.getPiece(position) != null) {
-                    ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
-                    ChessPiece.PieceType type = board.getPiece(position).getPieceType();
-
-                    if (spaceColor == teamColor) {
-                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
-                        for(ChessMove move : possibleMoves) {
-                            //deepcopy board
-                            ChessBoard boardCopy = new ChessBoard().clone();
-                            boardCopy.addPiece(move.getStartPosition(), null);
-                            boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
-                            //ckeck to see if the king is safe when other piece moves
-                            if(type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor,board)) {
-                                return false;
-                                //check to see if king safe when king moves
-                            } else if(type == ChessPiece.PieceType.KING && !isKingSafe(move.getEndPosition(),teamColor,boardCopy)) {
-                                return false;
-                            }
-                        }
+                    if (!checkIfSameColor(position, teamColor, kingPosition)) {
+                        return false;
                     }
                 }
             }
