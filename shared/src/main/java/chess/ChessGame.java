@@ -157,7 +157,10 @@ public class ChessGame {
         if(board.getPiece(move.getStartPosition()) == null) {
             throw new InvalidMoveException("No piece at start position");
         }
-
+        //check to see that team colors match
+        if(getTeamTurn() != board.getPiece(move.getStartPosition()).getTeamColor()){
+            throw new InvalidMoveException("Wrong color");
+        }
 
         //now creates possible moves after checking that everything is valid
         Collection<ChessMove> moves = validMoves(move.getStartPosition());
