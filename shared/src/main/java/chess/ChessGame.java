@@ -121,11 +121,27 @@ public class ChessGame {
 
         Collection<ChessMove> possibleMoves = new ChessPiece(currentColor,type).pieceMoves(getBoard(),startPosition);
 
-        //for(ChessMove move : possibleMoves) {
-            //return null; //still need to implement this
-        //}
+        for(ChessMove move : possibleMoves) {
+            //change to the move
 
-        validMoves.addAll(possibleMoves);
+            ChessPiece ogStart = board.getPiece(move.getStartPosition());
+            ChessPiece ogEnd = board.getPiece(move.getEndPosition());
+            //change to the move
+            board.addPiece(move.getStartPosition(), null);
+            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), type));
+
+            if(type != ChessPiece.PieceType.KING) {
+                if (!isInCheck(currentColor) && !isInCheckmate(currentColor)) {
+                    validMoves.add(move);
+                }
+            } else if (checkKingMoves(move.getEndPosition(),currentColor,board)) {
+                validMoves.add(move);
+            }
+
+            //change back to where it was
+            board.addPiece(move.getStartPosition(), ogStart);
+            board.addPiece(move.getEndPosition(), ogEnd);
+        }
 
         return validMoves;
     }
@@ -137,19 +153,29 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+
+        //now creates possible moves after checking that everything is valid
         Collection<ChessMove> moves = validMoves(move.getStartPosition());
 
         if (moves.contains(move)) {
-            ChessPiece.PieceType type = move.getPromotionPiece();
-            if (type == null) {
-                type = board.getPiece(move.getEndPosition()).getPieceType();
+            ChessPiece.PieceType promo = move.getPromotionPiece();
+            if (promo == null) {
+                promo = board.getPiece(move.getStartPosition()).getPieceType();
             }
 
-            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(),type));
             board.addPiece(move.getStartPosition(),null);
+            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), promo));
         } else {
-            throw new RuntimeException("InvalidMoveException");
+            throw new InvalidMoveException("Move not valid");
         }
+
+        //sets the turn to the other team
+        if (getTeamTurn() == TeamColor.BLACK) {
+            setTeamTurn(TeamColor.WHITE);
+        } else {
+            setTeamTurn(TeamColor.BLACK);
+        }
+
     }
 
     /**
@@ -189,7 +215,6 @@ public class ChessGame {
                         for(ChessMove move : possibleMoves) {
                             //deepcopy board
                             ChessBoard boardCopy = new ChessBoard().clone();
-                            //make the move with makeMove()
                             boardCopy.addPiece(move.getStartPosition(), null);
                             boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
                             //ckeck to see if the king is safe when other piece moves
@@ -232,7 +257,6 @@ public class ChessGame {
                             for (ChessMove move : possibleMoves) {
                                 //deepcopy board
                                 ChessBoard boardCopy = new ChessBoard().clone();
-                                //make the move with makeMove()
                                 boardCopy.addPiece(move.getStartPosition(), null);
                                 boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
                                 //ckeck to see if the king is safe when other piece moves
