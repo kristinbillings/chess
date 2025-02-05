@@ -153,6 +153,11 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        //start position blank
+        if(board.getPiece(move.getStartPosition()) == null) {
+            throw new InvalidMoveException("No piece at start position");
+        }
+
 
         //now creates possible moves after checking that everything is valid
         Collection<ChessMove> moves = validMoves(move.getStartPosition());
