@@ -35,36 +35,18 @@ public class ChessGame {
         return kingPosition;
     }
 
+    //private boolean checkBoardSpace() {
+
+    //}
+
     //returns false if the king is not safe
-    private boolean isKingSafe(ChessPosition kingPosition, TeamColor teamColor){
+    private boolean isKingSafe(ChessPosition kingPosition, TeamColor teamColor, ChessBoard myBoard){
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
                 ChessPosition position = new ChessPosition(i,j);
-                if(board.getPiece(position) != null) {
-                    ChessGame.TeamColor spaceColor = board.getPiece(position).getTeamColor();
-                    ChessPiece.PieceType type = board.getPiece(position).getPieceType();
-
-                    if (spaceColor != teamColor) {
-                        Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
-
-                        if (possibleMoves.contains(new ChessMove(position,kingPosition,null))) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    //returns false if king not safe
-    private boolean checkKingMoves(ChessPosition kingPosition, ChessGame.TeamColor teamColor, ChessBoard boardCopy) {
-        for (int i = 1; i <= 8; i++) {
-            for (int j = 1; j <= 8; j++) {
-                ChessPosition position = new ChessPosition(i,j);
-                if(boardCopy.getPiece(position) != null) {
-                    ChessGame.TeamColor spaceColor = boardCopy.getPiece(position).getTeamColor();
-                    ChessPiece.PieceType type = boardCopy.getPiece(position).getPieceType();
+                if(myBoard.getPiece(position) != null) {
+                    ChessGame.TeamColor spaceColor = myBoard.getPiece(position).getTeamColor();
+                    ChessPiece.PieceType type = myBoard.getPiece(position).getPieceType();
 
                     if (spaceColor != teamColor) {
                         Collection<ChessMove> possibleMoves = new ChessPiece(spaceColor,type).pieceMoves(getBoard(),position);
@@ -116,7 +98,7 @@ public class ChessGame {
         ChessPiece.PieceType type = getBoard().getPiece(startPosition).getPieceType();
 
         //if (type == null) {
-          //  return null;
+        //  return null;
         //}
 
         Collection<ChessMove> possibleMoves = new ChessPiece(currentColor,type).pieceMoves(getBoard(),startPosition);
@@ -138,7 +120,7 @@ public class ChessGame {
                 if (!isInCheck(currentColor) && !isInCheckmate(currentColor)) {
                     validMoves.add(move);
                 }
-            } else if (checkKingMoves(move.getEndPosition(),currentColor,board)) {
+            } else if (isKingSafe(move.getEndPosition(),currentColor,board)) {
                 validMoves.add(move);
             }
 
@@ -198,7 +180,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition kingPosition = wheresKing(teamColor);
-        if(isKingSafe(kingPosition,teamColor)){
+        if(isKingSafe(kingPosition,teamColor,board)){
             return false;
         }
         return true;
@@ -230,10 +212,10 @@ public class ChessGame {
                             boardCopy.addPiece(move.getStartPosition(), null);
                             boardCopy.addPiece(move.getEndPosition(), new ChessPiece(spaceColor, type));
                             //ckeck to see if the king is safe when other piece moves
-                            if(type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor)) {
+                            if(type != ChessPiece.PieceType.KING && isKingSafe(kingPosition, teamColor,board)) {
                                 return false;
-                            //check to see if king safe when king moves
-                            } else if(type == ChessPiece.PieceType.KING && !checkKingMoves(move.getEndPosition(),teamColor,boardCopy)) {
+                                //check to see if king safe when king moves
+                            } else if(type == ChessPiece.PieceType.KING && !isKingSafe(move.getEndPosition(),teamColor,boardCopy)) {
                                 return false;
                             }
                         }
