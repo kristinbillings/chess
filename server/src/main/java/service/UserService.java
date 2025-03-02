@@ -25,6 +25,7 @@ public class UserService {
 
     public RegisterResponse register(RegisterRequest request) throws DataAccessException {
 
+
         if (userDAO.getUserData(request.username()) != null){
             throw new DataAccessException("already taken");
         }
@@ -35,7 +36,9 @@ public class UserService {
         AuthData authData = new AuthData(generateToken(), request.username());
         authDAO.createAuth(authData);
 
-        return new RegisterResponse(userData.username(),authData.authToken());
+        RegisterResponse response = new RegisterResponse(userData.username(),authData.authToken());
+
+        return response;
     }
 
 
