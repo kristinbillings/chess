@@ -27,7 +27,7 @@ public class UserService {
 
 
         if (userDAO.getUserData(request.username()) != null){
-            throw new DataAccessException("already taken");
+            throw new DataAccessException("Error: already taken");
         }
 
         UserData userData= new UserData(request.username(), request.password(), request.email());

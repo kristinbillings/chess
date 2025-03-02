@@ -28,8 +28,8 @@ public class RegisterHandler implements Route {
             return new Gson().toJson(response);
         }
         catch(DataAccessException e) {
-            //res.status(400);
-            ErrorBadRequest errorResponse = new ErrorBadRequest("400", e.getMessage());
+            res.status(403);
+            ErrorBadRequest errorResponse = new ErrorBadRequest("403", e.getMessage());
             return new Gson().toJson(errorResponse);
 
         }
