@@ -19,6 +19,7 @@ public class RegisterHandler implements Route {
         RegisterRequest request = new Gson().fromJson(req.body(), RegisterRequest.class);
         //UserService service = new UserService();
         RegisterResponse response = userService.register(request);
+        res.status(200);
         return new Gson().toJson(response);
     }
 }
