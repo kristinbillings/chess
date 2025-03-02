@@ -17,4 +17,10 @@ public class MemoryUserDAO implements UserDAO {
         allUserData.put(userData.username(), userData);
     }
 
+    @Override
+    public void clear() {
+        if (!allUserData.isEmpty()){
+            allUserData.clear();
+        }
+    }
 }

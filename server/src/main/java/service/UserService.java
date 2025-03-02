@@ -20,7 +20,7 @@ public class UserService {
     public RegisterResponse register(RegisterRequest request) throws DataAccessException {
 
         if (userDAO.getUserData(request.username()) != null){
-            throw new DataAccessException("Username already used");
+            throw new DataAccessException("already taken");
         }
 
         UserData userData= new UserData(request.username(), request.password(), request.email());

@@ -10,4 +10,11 @@ public class MemoryAuthDAO implements AuthDAO {
     public void createAuth(AuthData authData) {
         allAuthData.put(authData.username(),authData);
     }
+
+    @Override
+    public void clear () {
+        if (!allAuthData.isEmpty()){
+            allAuthData.clear();
+        }
+    }
 }
