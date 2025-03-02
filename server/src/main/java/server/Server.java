@@ -9,6 +9,10 @@ public class Server {
 
         Spark.staticFiles.location("web");
 
+        RegisterHandler registerHandler = new RegisterHandler();
+
+        Spark.post("/user", registerHandler);
+
         // Register your endpoints and handle exceptions here.
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
@@ -22,4 +26,5 @@ public class Server {
         Spark.stop();
         Spark.awaitStop();
     }
+
 }
