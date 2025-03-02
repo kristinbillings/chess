@@ -11,7 +11,6 @@ public class Server {
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
-
         Spark.staticFiles.location("web");
 
         MemoryUserDAO userDAO = new MemoryUserDAO();
@@ -23,12 +22,12 @@ public class Server {
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", registerHandler);
 
-        Spark.delete("/db",(req, res) -> {
+       /* Spark.delete("/db",(req, res) -> {
             userDAO.clear();
             authDAO.clear();
             res.status(200);
             return "{}";
-        });
+        }); */
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         //Spark.init();

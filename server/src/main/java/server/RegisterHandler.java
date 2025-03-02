@@ -1,5 +1,6 @@
 package server;
 import com.google.gson.Gson;
+import dataaccess.DataAccessException;
 import model.UserData;
 import service.UserService;
 import spark.*;
@@ -13,7 +14,7 @@ public class RegisterHandler implements Route {
         this.userService = userService;
     };
 
-    public Object handle(Request req, Response res) throws Exception {
+    public Object handle(Request req, Response res) throws DataAccessException {
 
         RegisterRequest request = new Gson().fromJson(req.body(), RegisterRequest.class);
         //UserService service = new UserService();
