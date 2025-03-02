@@ -5,6 +5,7 @@ import dataaccess.MemoryUserDAO;
 import dataaccess.MemoryAuthDAO;
 import model.UserData;
 import model.AuthData;
+import org.eclipse.jetty.server.Authentication;
 import requests.RegisterRequest;
 import responses.RegisterResponse;
 import java.util.UUID;
@@ -12,6 +13,11 @@ import java.util.UUID;
 public class UserService {
     private MemoryUserDAO userDAO;
     private MemoryAuthDAO authDAO;
+
+    public UserService(MemoryAuthDAO authDAO, MemoryUserDAO userDAO) {
+        this.userDAO = userDAO;
+        this.authDAO = authDAO;
+    }
 
     private String generateToken() {
         return UUID.randomUUID().toString();
