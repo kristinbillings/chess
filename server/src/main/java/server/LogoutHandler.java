@@ -11,6 +11,7 @@ import spark.Response;
 import spark.Route;
 
 import java.io.Reader;
+import java.util.Objects;
 import java.util.Set;
 
 public class LogoutHandler implements Route {
@@ -38,9 +39,15 @@ public class LogoutHandler implements Route {
             return new Gson().toJson(finalResponse);
         }
         catch( DataAccessException e) {
-            res.status(500);
-            ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
-            return new Gson().toJson(errorResponse);
+            if (Objects.equals(e.getMessage(), "Error: Unauthorized")) {
+                res.status(401);
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
+                return new Gson().toJson(errorResponse);
+            } else {
+                res.status(500);
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
+                return new Gson().toJson(errorResponse);
+            }
         }
     }
 }
