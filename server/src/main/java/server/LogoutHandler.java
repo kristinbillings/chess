@@ -31,13 +31,13 @@ public class LogoutHandler implements Route {
             }
             LogoutResult response = userService.logout(request);
             res.status(200);
-            ErrorStatusMessage finalResponse = new ErrorStatusMessage("500", "OK");
+            ErrorStatusMessage finalResponse = new ErrorStatusMessage("200", "OK");
             return new Gson().toJson(finalResponse);
         }
         catch( DataAccessException e) {
             if (Objects.equals(e.getMessage(), "Error: Unauthorized")) {
                 res.status(401);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("401", e.getMessage());
                 return new Gson().toJson(errorResponse);
             } else {
                 res.status(500);

@@ -5,6 +5,7 @@ import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
 import dataaccess.MemoryGameDAO;
+import model.AuthData;
 import model.GameData;
 import requests.CreateRequest;
 import results.CreateResult;
@@ -22,16 +23,21 @@ public class GameService {
     }
 
     public CreateResult create(CreateRequest request) throws DataAccessException {
+        AuthData authData = authDAO.getUserAuthData(request.authToken());
+
         if (request.gameName() == null){
             throw new DataAccessException("Error: bad request");
         }
+        //if (authData == null){
+          //  throw new DataAccessException("Error: Unauthorized");
+        //}
 
         int gameID = gameDAO.getGameID();
         ChessGame game = new ChessGame();
         GameData gameData = new GameData(gameID,"","", request.gameName(), game);
-
         gameDAO.createGame(gameData);
-        CreateResult result = new CreateResult(userData.username(),authData.authToken());
+
+        CreateResult result = new CreateResult(gameData.gameID());
         return result;
     }
 }

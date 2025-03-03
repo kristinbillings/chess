@@ -12,6 +12,7 @@ import spark.Response;
 import spark.Route;
 
 import javax.xml.crypto.Data;
+import java.util.Objects;
 
 public class CreateHandler implements Route {
     private GameService gameService;
@@ -41,9 +42,15 @@ public class CreateHandler implements Route {
             return new Gson().toJson(result);
         }
         catch (DataAccessException e) {
-            res.status(500);
-            ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
-            return new Gson().toJson(errorResponse);
+            if (Objects.equals(e.getMessage(), "Error: Unauthorized")) {
+                res.status(401);
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("401", e.getMessage());
+                return new Gson().toJson(errorResponse);
+            } else {
+                res.status(500);
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
+                return new Gson().toJson(errorResponse);
+            }
         }
     };
 }
