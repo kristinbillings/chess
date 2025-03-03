@@ -9,11 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.*;
 import results.*;
+import service.GameService;
+import service.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ServiceTests {
+public class CreateListJoinTests {
     private UserService userService;
     private GameService gameService;
     private MemoryAuthDAO authDAO;
@@ -33,6 +35,41 @@ public class ServiceTests {
     public void createUser() throws DataAccessException {
         RegisterRequest request = new RegisterRequest("Steve", "urmom", "hottie@gmail.com");
         RegisterResult register = userService.register(request);
+    }
+
+    //CREATE TESTS
+    @Test
+    public void testValidCreateGame() throws DataAccessException {
+        LoginRequest request1 = new LoginRequest("Steve", "urmom");
+        LoginResult actual1 = userService.login(request1);
+        CreateRequest request = new CreateRequest("THe WINNERS", actual1.authToken());
+        CreateResult actual = gameService.create(request);
+
+        CreateResult expected = new CreateResult(1);
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testInvalidAuthTokenCreate() throws DataAccessException {
+        LoginRequest request1 = new LoginRequest("Steve","urmom");
+        LoginResult actual1 = userService.login(request1);
+        CreateRequest request = new CreateRequest("THe WINNERS", "23nlkjdkljadf");
+
+        Assertions.assertThrows(DataAccessException.class, () -> {
+            gameService.create(request);
+        }, "Error: unauthorized");
+    }
+
+    @Test
+    public void testInvalidNameCreate() throws DataAccessException {
+        LoginRequest request1 = new LoginRequest("Steve","urmom");
+        LoginResult actual1 = userService.login(request1);
+        CreateRequest request = new CreateRequest(null, actual1.authToken());
+
+        Assertions.assertThrows(DataAccessException.class, () -> {
+            gameService.create(request);
+        }, "Error: bad request");
     }
 
     //LIST TESTS
@@ -88,64 +125,6 @@ public class ServiceTests {
             gameService.listGames(request);
         }, "Error: unauthorized");
     }
-
-    //LOGIN TESTS
-    @Test
-    public void testValidRLogin() throws DataAccessException {
-        LoginRequest request = new LoginRequest("Steve","urmom");
-        LoginResult actual = userService.login(request);
-
-        String username = "Steve";
-        String authToken = actual.authToken();
-        LoginResult expected = new LoginResult(username,authToken);
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testInvalidLogin() throws DataAccessException {
-        LoginRequest request = new LoginRequest("Steve","urmo");
-
-        Assertions.assertThrows(DataAccessException.class, () -> {
-            userService.login(request);
-        }, "Error: unauthorized");
-    }
-
-    //LOGOUT TESTS
-    @Test
-    public void testValidLogout() throws DataAccessException {
-        LoginRequest request1 = new LoginRequest("Steve","urmom");
-        LoginResult actual1 = userService.login(request1);
-        LogoutRequest request = new LogoutRequest(actual1.authToken());
-        LogoutResult actual = userService.logout(request);
-
-        LogoutResult expected = new LogoutResult("OK");
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testInvalidAuthTokenLogout() throws DataAccessException {
-        LoginRequest request1 = new LoginRequest("Steve","urmom");
-        LoginResult actual1 = userService.login(request1);
-        LogoutRequest request = new LogoutRequest("23nlkjdkljadf");
-
-        Assertions.assertThrows(DataAccessException.class, () -> {
-            userService.logout(request);
-        }, "Error: unauthorized");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 
     //JOIN TESTS
     @Test
@@ -214,4 +193,5 @@ public class ServiceTests {
             gameService.join(request);
         }, "Error: already taken");
     }
+
 }
