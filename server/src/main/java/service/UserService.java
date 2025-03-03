@@ -60,8 +60,6 @@ public class UserService {
     }
 
 
-    //public AuthData login(UserData user) {}
-
     //public void logout(UserData user) {}
 
 }
