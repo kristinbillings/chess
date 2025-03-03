@@ -94,7 +94,7 @@ public class GameService {
             throw new DataAccessException("Error: already taken");
         }
 
-        JoinResult result = new JoinResult("OK");
+        JoinResult result = new JoinResult("");
         return result;
     }
 }
