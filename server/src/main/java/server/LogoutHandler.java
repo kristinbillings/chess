@@ -17,9 +17,7 @@ public class LogoutHandler implements Route {
 
     public LogoutHandler(UserService userService) {
         this.userService = userService;
-    }
-
-    ;
+    };
 
     public Object handle(Request req, Response res) throws DataAccessException {
         String authToken = req.headers("authorization");

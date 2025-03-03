@@ -35,9 +35,9 @@ public class UserService {
         AuthData authData = new AuthData(generateToken(), request.username());
         authDAO.createAuth(authData);
 
-        RegisterResult response = new RegisterResult(userData.username(),authData.authToken());
+        RegisterResult result = new RegisterResult(userData.username(),authData.authToken());
 
-        return response;
+        return result;
     }
 
     public LoginResult login(LoginRequest request) throws DataAccessException {
@@ -53,9 +53,9 @@ public class UserService {
         AuthData authData = new AuthData(generateToken(), request.username());
         authDAO.createAuth(authData);
 
-        LoginResult response = new LoginResult(userData.username(),authData.authToken());
+        LoginResult result = new LoginResult(userData.username(),authData.authToken());
 
-        return response;
+        return result;
     }
 
     public LogoutResult logout(LogoutRequest request) throws DataAccessException {
@@ -66,8 +66,8 @@ public class UserService {
         }
         authDAO.deleteAuth(authData);
 
-        LogoutResult response = new LogoutResult("OK");
-        return response;
+        LogoutResult result = new LogoutResult("OK");
+        return result;
     }
     //public void logout(UserData user) {}
 
