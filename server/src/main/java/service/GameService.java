@@ -8,12 +8,13 @@ import dataaccess.MemoryGameDAO;
 import model.AuthData;
 import model.GameData;
 import requests.CreateRequest;
+import requests.JoinRequest;
 import requests.ListRequest;
 import results.CreateResult;
 import results.ListResult;
-import results.RegisterResult;
-
+import results.JoinResult;
 import java.util.Map;
+import java.util.Objects;
 
 public class GameService {
     private MemoryUserDAO userDAO;
@@ -58,6 +59,31 @@ public class GameService {
         }
         ListResult result = new ListResult(allGames);
 
+        return result;
+    }
+
+    public JoinResult join(JoinRequest request) throws DataAccessException {
+        AuthData authData = authDAO.getUserAuthData(request.authToken());
+        if (authData == null){
+            throw new DataAccessException("Error: unauthorized");
+        }
+
+        GameData gameInfo = gameDAO.getGame(request.gameID());
+        if (gameInfo == null) {
+            throw new DataAccessException("Error: bad request");
+        }
+
+        String username = authDAO.getUserAuthData(request.authToken()).username();
+
+        if (Objects.equals(request.playerColor(), "WHITE") && gameInfo.whiteUsername() == null) {
+            gameDAO.updateGame(request.gameID(), username,request.playerColor());
+        } else if (Objects.equals(request.playerColor(), "BLACK") && gameInfo.blackUsername() == null) {
+            gameDAO.updateGame(request.gameID(), username,request.playerColor());
+        } else {
+            throw new DataAccessException("Error: already taken");
+        }
+
+        JoinResult result = new JoinResult("OK");
         return result;
     }
 }

@@ -11,4 +11,8 @@ public interface GameDAO {
     int getGameID();
 
     Map<Integer, GameData> getAllGameData();
+
+    GameData getGame(Integer gameID);
+
+    void updateGame(Integer gameID, String username, String color);
 }
