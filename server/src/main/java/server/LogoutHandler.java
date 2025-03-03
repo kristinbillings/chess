@@ -34,16 +34,9 @@ public class LogoutHandler implements Route {
             ErrorStatusMessage finalResponse = new ErrorStatusMessage("200", "OK");
             return new Gson().toJson(finalResponse);
         }
-        catch( DataAccessException e) {
-            if (Objects.equals(e.getMessage(), "Error: unauthorized")) {
-                res.status(401);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("401", e.getMessage());
-                return new Gson().toJson(errorResponse);
-            } else {
-                res.status(500);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
-                return new Gson().toJson(errorResponse);
-            }
+        catch(DataAccessException e) {
+            ErrorMessages errorMessage = new ErrorMessages();
+            return new Gson().toJson(errorMessage.ErrorMessage(e,res));
         }
     }
 }

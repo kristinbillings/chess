@@ -33,16 +33,8 @@ public class LoginHandler implements Route {
             return new Gson().toJson(response);
         }
         catch(DataAccessException e) {
-            ErrorStatusMessage errorResponse = null;
-            if (Objects.equals(e.getMessage(), "Error: unauthorized")) {
-                res.status(401);
-                errorResponse = new ErrorStatusMessage("401", e.getMessage());
-            } else {
-                res.status(500);
-                errorResponse = new ErrorStatusMessage("500", e.getMessage());
-            }
-            return new Gson().toJson(errorResponse);
-
+            ErrorMessages errorMessage = new ErrorMessages();
+            return new Gson().toJson(errorMessage.ErrorMessage(e,res));
         }
     };
 }
