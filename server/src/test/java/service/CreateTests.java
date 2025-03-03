@@ -28,7 +28,6 @@ public class CreateTests {
         gameDAO = new MemoryGameDAO();
         userService = new UserService(authDAO, userDAO);
         gameService = new GameService(authDAO, userDAO, gameDAO);
-        //expected = new LoginResult("","");
     }
 
     @BeforeEach
