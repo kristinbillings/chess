@@ -29,15 +29,18 @@ public class ListHandler implements Route {
             res.status(200);
             return new Gson().toJson(result);
         } catch( DataAccessException e ) {
+            ErrorStatusMessage errorResponse = null;
             if (Objects.equals(e.getMessage(), "Error: unauthorized")) {
                 res.status(401);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("401", e.getMessage());
-                return new Gson().toJson(errorResponse);
+                errorResponse = new ErrorStatusMessage("401", e.getMessage());
+                //return new Gson().toJson(errorResponse);
             } else {
                 res.status(500);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
-                return new Gson().toJson(errorResponse);
+                errorResponse = new ErrorStatusMessage("500", e.getMessage());
+                //return new Gson().toJson(errorResponse);
             }
+            return new Gson().toJson(errorResponse);
+
         }
 
     };
