@@ -5,7 +5,7 @@ import dataaccess.ErrorStatusMessage;
 import service.UserService;
 import spark.*;
 import requests.RegisterRequest;
-import responses.RegisterResponse;
+import results.RegisterResult;
 
 public class RegisterHandler implements Route {
     private UserService userService;
@@ -23,7 +23,7 @@ public class RegisterHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);
             }
-            RegisterResponse response = userService.register(request);
+            RegisterResult response = userService.register(request);
             res.status(200);
             return new Gson().toJson(response);
         }

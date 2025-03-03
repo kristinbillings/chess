@@ -4,15 +4,13 @@ import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
 import requests.LogoutRequest;
-import responses.LogoutResponse;
+import results.LogoutResult;
 import service.UserService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.io.Reader;
 import java.util.Objects;
-import java.util.Set;
 
 public class LogoutHandler implements Route {
     private UserService userService;
@@ -33,7 +31,7 @@ public class LogoutHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", "Error: no authToken");
                 return new Gson().toJson(errorResponse);
             }
-            LogoutResponse response = userService.logout(request);
+            LogoutResult response = userService.logout(request);
             res.status(200);
             ErrorStatusMessage finalResponse = new ErrorStatusMessage("500", "OK");
             return new Gson().toJson(finalResponse);

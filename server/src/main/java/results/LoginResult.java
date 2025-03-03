@@ -1,6 +1,6 @@
-package responses;
+package results;
 
-public record LoginResponse(
+public record LoginResult(
         String username,
         String authToken) {
 }

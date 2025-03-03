@@ -1,6 +1,6 @@
-package responses;
+package results;
 
-public record RegisterResponse(
+public record RegisterResult(
         String username,
         String authToken) {
 }

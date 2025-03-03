@@ -3,14 +3,12 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
-import requests.RegisterRequest;
-import responses.RegisterResponse;
 import service.UserService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import requests.LoginRequest;
-import responses.LoginResponse;
+import results.LoginResult;
 
 import java.util.Objects;
 
@@ -30,7 +28,7 @@ public class LoginHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);
             }
-            LoginResponse response = userService.login(request);
+            LoginResult response = userService.login(request);
             res.status(200);
             return new Gson().toJson(response);
         }
