@@ -20,7 +20,7 @@ public class RegisterTest {
         authDAO = new MemoryAuthDAO();
         userDAO = new MemoryUserDAO();
         userService = new UserService(authDAO,userDAO);
-        expected = new RegisterResult("","");
+        //expected = new RegisterResult("","");
     }
 
     @Test
@@ -39,9 +39,11 @@ public class RegisterTest {
     @Test
     public void testInvalidRegistration() throws DataAccessException {
         RegisterRequest request = new RegisterRequest(null,"urmom","hottie@gmail.com");
+        RegisterResult actual = userService.register(request);
+
 
         Assertions.assertThrows(DataAccessException.class, () -> {
             userService.register(request);
-        }, "Expected DataAccessException to be thrown for null username");
+        }, "Error: already taken");
     }
 }

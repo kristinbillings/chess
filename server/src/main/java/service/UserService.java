@@ -62,7 +62,7 @@ public class UserService {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
 
         if (authData == null){
-            throw new DataAccessException("Error: Unauthorized");
+            throw new DataAccessException("Error: unauthorized");
         }
         authDAO.deleteAuth(authData);
 
