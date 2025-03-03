@@ -32,7 +32,7 @@ public class GameService {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
 
         if (authData == null){
-            throw new DataAccessException("Error: Unauthorized");
+            throw new DataAccessException("Error: unauthorized");
         }
         if (request.gameName() == null) {
             throw new DataAccessException("Error: bad request");

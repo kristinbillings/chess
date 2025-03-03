@@ -38,7 +38,7 @@ public class LogoutTests {
     }
 
     @Test
-    public void testValidRLogout() throws DataAccessException {
+    public void testValidLogout() throws DataAccessException {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         LogoutRequest request = new LogoutRequest(actual1.authToken());
@@ -50,7 +50,7 @@ public class LogoutTests {
     }
 
     @Test
-    public void testInvalidLogout() throws DataAccessException {
+    public void testInvalidAuthTokenLogout() throws DataAccessException {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         LogoutRequest request = new LogoutRequest("23nlkjdkljadf");

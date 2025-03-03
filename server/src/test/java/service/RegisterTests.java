@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import requests.RegisterRequest;
 import results.RegisterResult;
 
-public class RegisterTest {
+public class RegisterTests {
     private UserService userService;
     private MemoryAuthDAO authDAO;
     private MemoryUserDAO userDAO;
