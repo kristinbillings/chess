@@ -1,7 +1,7 @@
 package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.ErrorBadRequest;
+import dataaccess.ErrorStatusMessage;
 import service.UserService;
 import spark.*;
 import requests.*;
@@ -20,7 +20,7 @@ public class RegisterHandler implements Route {
         try {
             if (request.username() == null|request.password() == null|request.email() == null) {
                 res.status(400);
-                ErrorBadRequest errorResponse = new ErrorBadRequest("400", "Error: bad request");
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);
             }
             RegisterResponse response = userService.register(request);
@@ -29,7 +29,7 @@ public class RegisterHandler implements Route {
         }
         catch(DataAccessException e) {
             res.status(403);
-            ErrorBadRequest errorResponse = new ErrorBadRequest("403", e.getMessage());
+            ErrorStatusMessage errorResponse = new ErrorStatusMessage("403", e.getMessage());
             return new Gson().toJson(errorResponse);
 
         }

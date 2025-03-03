@@ -1,10 +1,10 @@
 package dataaccess;
 
-public class ErrorBadRequest {
+public class ErrorStatusMessage {
     private String status;
     private String message;
 
-    public ErrorBadRequest(String status, String message) {
+    public ErrorStatusMessage(String status, String message) {
         this.status = status;
         this.message = message;
     }

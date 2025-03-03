@@ -2,6 +2,7 @@ package server;
 
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
+import org.eclipse.jetty.util.log.Log;
 import service.GameService;
 import service.UserService;
 import spark.*;
@@ -18,9 +19,11 @@ public class Server {
         this.userService = new UserService(authDAO, userDAO);
 
         RegisterHandler registerHandler = new RegisterHandler(userService);
+        LoginHandler loginHandler = new LoginHandler(userService);
 
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", registerHandler);
+        Spark.post("/session", loginHandler);
 
         Spark.delete("/db",(req, res) -> {
             userDAO.clear();
