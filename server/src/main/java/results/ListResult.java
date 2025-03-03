@@ -1,10 +1,8 @@
 package results;
 
-import model.GameData;
-
-import java.util.ArrayList;
+import java.util.List;
 
 
 public record ListResult(
-        Object[][] games) {
+        List<GameResult> games) {
 }

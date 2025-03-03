@@ -11,13 +11,11 @@ import requests.CreateRequest;
 import requests.JoinRequest;
 import requests.ListRequest;
 import results.CreateResult;
+import results.GameResult;
 import results.ListResult;
 import results.JoinResult;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GameService {
     private MemoryUserDAO userDAO;
@@ -57,19 +55,22 @@ public class GameService {
 
         Map<Integer, GameData> allGames = gameDAO.getAllGameData();
 
-        //if (allGames.isEmpty()) {
-          //  throw new DataAccessException("Error: no current games");
-        //}
+        List<GameResult> listAllGames = new ArrayList<>();
 
-        //Collection<> listAllGames = new Object[allGames.size()][4];
+        //Map<Object,Object>
 
-        int i = 0;
-        //for (Integer gameID : allGames.keySet()) {
-          //  listAllGames.add(allGames.get(gameID));
-        //}
+        //int i = 0;
+        for (Integer gameID : allGames.keySet()) {
+            GameResult game = new GameResult(
+                    allGames.get(gameID).gameID(),
+                    allGames.get(gameID).whiteUsername(),
+                    allGames.get(gameID).blackUsername(),
+                    allGames.get(gameID).gameName());
 
-        //ListResult result = new ListResult(listAllGames);
-        return null;
+            listAllGames.add(game);
+        }
+
+        return new ListResult(listAllGames);
     }
 
     public JoinResult join(JoinRequest request) throws DataAccessException {

@@ -41,6 +41,7 @@ public class Server {
         Spark.delete("/db",(req, res) -> {
             userDAO.clear();
             authDAO.clear();
+            gameDAO.clear();
             res.status(200);
             return "{}";
         });

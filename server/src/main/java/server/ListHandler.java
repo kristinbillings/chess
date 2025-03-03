@@ -27,8 +27,7 @@ public class ListHandler implements Route {
         try {
             ListResult result = gameService.listGames(request);
             res.status(200);
-            ErrorStatusMessage finalResponse = new ErrorStatusMessage("200", "OK");
-            return new Gson().toJson(finalResponse);
+            return new Gson().toJson(result);
         } catch( DataAccessException e ) {
             if (Objects.equals(e.getMessage(), "Error: unauthorized")) {
                 res.status(401);

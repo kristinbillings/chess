@@ -15,4 +15,6 @@ public interface GameDAO {
     GameData getGame(Integer gameID);
 
     void updateGame(Integer gameID, String username, String color);
+
+    void clear();
 }
