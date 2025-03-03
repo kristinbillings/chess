@@ -25,16 +25,16 @@ public class GameService {
     public CreateResult create(CreateRequest request) throws DataAccessException {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
 
-        if (request.gameName() == null){
+        if (authData == null){
+            throw new DataAccessException("Error: Unauthorized");
+        }
+        if (request.gameName() == null) {
             throw new DataAccessException("Error: bad request");
         }
-        //if (authData == null){
-          //  throw new DataAccessException("Error: Unauthorized");
-        //}
 
         int gameID = gameDAO.getGameID();
         ChessGame game = new ChessGame();
-        GameData gameData = new GameData(gameID,"","", request.gameName(), game);
+        GameData gameData = new GameData(gameID,null,null, request.gameName(), game);
         gameDAO.createGame(gameData);
 
         CreateResult result = new CreateResult(gameData.gameID());

@@ -4,14 +4,12 @@ import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
 import requests.CreateRequest;
+import requests.GameNameRequest;
 import results.CreateResult;
 import service.GameService;
-import service.UserService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import javax.xml.crypto.Data;
 import java.util.Objects;
 
 public class CreateHandler implements Route {
@@ -23,15 +21,12 @@ public class CreateHandler implements Route {
 
     public Object handle(Request req, Response res) throws DataAccessException {
         String authToken = req.headers("authorization");
-        CreateRequest request = new Gson().fromJson(req.body(), CreateRequest.class);
+        GameNameRequest gameName = new Gson().fromJson(req.body(), GameNameRequest.class);
+
+        CreateRequest request = new CreateRequest(gameName.gameName(), authToken);
 
         try {
             if (request.gameName() == null) {
-                res.status(400);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
-                return new Gson().toJson(errorResponse);
-            }
-            if (authToken == null) {
                 res.status(400);
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);
