@@ -8,8 +8,12 @@ import dataaccess.MemoryGameDAO;
 import model.AuthData;
 import model.GameData;
 import requests.CreateRequest;
+import requests.ListRequest;
 import results.CreateResult;
+import results.ListResult;
 import results.RegisterResult;
+
+import java.util.Map;
 
 public class GameService {
     private MemoryUserDAO userDAO;
@@ -39,5 +43,15 @@ public class GameService {
 
         CreateResult result = new CreateResult(gameData.gameID());
         return result;
+    }
+
+    public ListResult listGames(ListRequest request) throws DataAccessException {
+        AuthData authData = authDAO.getUserAuthData(request.authToken());
+        if (authData == null){
+            throw new DataAccessException("Error: Unauthorized");
+        }
+
+        Map<Integer, GameData> allGames = gameDAO.getAllGameData();
+        ListResult result = new ListResult(allGames);
     }
 }
