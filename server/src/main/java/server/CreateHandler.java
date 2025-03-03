@@ -18,9 +18,7 @@ public class CreateHandler implements Route {
 
     public CreateHandler(GameService gameService) {
         this.gameService = gameService;
-    }
-
-    ;
+    };
 
     public Object handle(Request req, Response res) throws DataAccessException {
         String authToken = req.headers("authorization");

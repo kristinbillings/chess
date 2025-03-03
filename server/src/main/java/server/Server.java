@@ -1,6 +1,7 @@
 package server;
 
 import dataaccess.MemoryAuthDAO;
+import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
 import org.eclipse.jetty.util.log.Log;
 import service.GameService;
@@ -17,8 +18,9 @@ public class Server {
 
         MemoryUserDAO userDAO = new MemoryUserDAO();
         MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MemoryGameDAO gameDAO = new MemoryGameDAO();
         this.userService = new UserService(authDAO, userDAO);
-        this.gameService = new GameService(authDAO, userDAO);
+        this.gameService = new GameService(authDAO, userDAO, gameDAO);
 
 
         RegisterHandler registerHandler = new RegisterHandler(userService);

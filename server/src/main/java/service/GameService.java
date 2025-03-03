@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
@@ -21,9 +22,15 @@ public class GameService {
     }
 
     public CreateResult create(CreateRequest request) throws DataAccessException {
-        GameData gameData = gameDAO;
+        if (request.gameName() == null){
+            throw new DataAccessException("Error: bad request");
+        }
 
+        int gameID = gameDAO.getGameID();
+        ChessGame game = new ChessGame();
+        GameData gameData = new GameData(gameID,"","", request.gameName(), game);
 
+        gameDAO.createGame(gameData);
         CreateResult result = new CreateResult(userData.username(),authData.authToken());
         return result;
     }
