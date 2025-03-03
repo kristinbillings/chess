@@ -33,11 +33,9 @@ public class ListHandler implements Route {
             if (Objects.equals(e.getMessage(), "Error: unauthorized")) {
                 res.status(401);
                 errorResponse = new ErrorStatusMessage("401", e.getMessage());
-                //return new Gson().toJson(errorResponse);
             } else {
                 res.status(500);
                 errorResponse = new ErrorStatusMessage("500", e.getMessage());
-                //return new Gson().toJson(errorResponse);
             }
             return new Gson().toJson(errorResponse);
 
