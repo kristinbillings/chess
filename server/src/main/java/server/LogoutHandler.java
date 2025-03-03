@@ -23,7 +23,7 @@ public class LogoutHandler implements Route {
     ;
 
     public Object handle(Request req, Response res) throws DataAccessException {
-        String authToken = req.headers("authorization:");
+        String authToken = req.headers("authorization");
         LogoutRequest request = new LogoutRequest(authToken);
 
         try {
