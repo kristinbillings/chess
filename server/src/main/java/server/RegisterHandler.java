@@ -4,8 +4,8 @@ import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
 import service.UserService;
 import spark.*;
-import requests.*;
-import responses.*;
+import requests.RegisterRequest;
+import responses.RegisterResponse;
 
 public class RegisterHandler implements Route {
     private UserService userService;

@@ -8,6 +8,8 @@ import model.AuthData;
 import org.eclipse.jetty.server.Authentication;
 import requests.*;
 import responses.*;
+
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserService {
@@ -39,18 +41,20 @@ public class UserService {
         return response;
     }
 
-    public LoginResponse login(RegisterRequest request) throws DataAccessException {
-        if (userDAO.getUserData(request.username()) != null){
-            throw new DataAccessException("Error: already taken");
-        }
+    public LoginResponse login(LoginRequest request) throws DataAccessException {
+        UserData userData = userDAO.getUserData(request.username());
 
-        UserData userData= new UserData(request.username(), request.password(), request.email());
-        userDAO.createUser(userData);
+        if (userData == null){
+            throw new DataAccessException("Error: unauthorized");
+        }
+        if (!Objects.equals(userData.password(), request.password())) {
+            throw new DataAccessException("Error: unauthorized");
+        }
 
         AuthData authData = new AuthData(generateToken(), request.username());
         authDAO.createAuth(authData);
 
-        RegisterResponse response = new RegisterResponse(userData.username(),authData.authToken());
+        LoginResponse response = new LoginResponse(userData.username(),authData.authToken());
 
         return response;
     }
