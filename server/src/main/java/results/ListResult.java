@@ -2,8 +2,9 @@ package results;
 
 import model.GameData;
 
-import java.util.Map;
+import java.util.ArrayList;
+
 
 public record ListResult(
-        Map<Integer, GameData> games) {
+        Object[][] games) {
 }

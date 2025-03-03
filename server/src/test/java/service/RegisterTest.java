@@ -21,7 +21,6 @@ public class RegisterTest {
         userDAO = new MemoryUserDAO();
         userService = new UserService(authDAO,userDAO);
         expected = new RegisterResult("","");
-
     }
 
     @Test
@@ -35,5 +34,14 @@ public class RegisterTest {
 
         Assertions.assertEquals(expected, actual);
 
+    }
+
+    @Test
+    public void testInvalidRegistration() throws DataAccessException {
+        RegisterRequest request = new RegisterRequest(null,"urmom","hottie@gmail.com");
+
+        Assertions.assertThrows(DataAccessException.class, () -> {
+            userService.register(request);
+        }, "Expected DataAccessException to be thrown for null username");
     }
 }

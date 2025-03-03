@@ -13,6 +13,9 @@ import requests.ListRequest;
 import results.CreateResult;
 import results.ListResult;
 import results.JoinResult;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
@@ -54,12 +57,19 @@ public class GameService {
 
         Map<Integer, GameData> allGames = gameDAO.getAllGameData();
 
-        if (allGames == null) {
-            throw new DataAccessException("Error: no current games");
-        }
-        ListResult result = new ListResult(allGames);
+        //if (allGames.isEmpty()) {
+          //  throw new DataAccessException("Error: no current games");
+        //}
 
-        return result;
+        //Collection<> listAllGames = new Object[allGames.size()][4];
+
+        int i = 0;
+        //for (Integer gameID : allGames.keySet()) {
+          //  listAllGames.add(allGames.get(gameID));
+        //}
+
+        //ListResult result = new ListResult(listAllGames);
+        return null;
     }
 
     public JoinResult join(JoinRequest request) throws DataAccessException {
