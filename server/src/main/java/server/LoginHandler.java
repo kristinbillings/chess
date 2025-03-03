@@ -34,7 +34,7 @@ public class LoginHandler implements Route {
         }
         catch(DataAccessException e) {
             ErrorMessages errorMessage = new ErrorMessages();
-            return new Gson().toJson(errorMessage.ErrorMessage(e,res));
+            return new Gson().toJson(errorMessage.errorMessages(e,res));
         }
     };
 }

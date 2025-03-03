@@ -30,7 +30,7 @@ public class ListHandler implements Route {
             return new Gson().toJson(result);
         } catch( DataAccessException e ) {
             ErrorMessages errorMessage = new ErrorMessages();
-            return new Gson().toJson(errorMessage.ErrorMessage(e,res));
+            return new Gson().toJson(errorMessage.errorMessages(e,res));
         }
 
     };
