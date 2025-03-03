@@ -46,8 +46,6 @@ public class LoginTests {
     @Test
     public void testInvalidLogin() throws DataAccessException {
         LoginRequest request = new LoginRequest("Steve","urmo");
-        LoginResult actual = userService.login(request);
-
 
         Assertions.assertThrows(DataAccessException.class, () -> {
             userService.login(request);

@@ -54,8 +54,6 @@ public class LogoutTests {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         LogoutRequest request = new LogoutRequest("23nlkjdkljadf");
-        LogoutResult actual = userService.logout(request);
-
 
         Assertions.assertThrows(DataAccessException.class, () -> {
             userService.logout(request);
