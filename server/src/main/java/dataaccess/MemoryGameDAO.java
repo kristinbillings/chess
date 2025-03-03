@@ -39,6 +39,7 @@ public class MemoryGameDAO implements GameDAO {
     @Override
     public void updateGame(Integer gameID, String username, String color) {
         GameData gameData = allGameData.get(gameID);
+        //GameData updatedData = gameData;
 
         if(Objects.equals(color, "WHITE")) {
             GameData updatedData = new GameData(
@@ -46,6 +47,8 @@ public class MemoryGameDAO implements GameDAO {
                     username,gameData.blackUsername(),
                     gameData.gameName(),
                     gameData.game() );
+            allGameData.put(gameID, updatedData);
+
         } else if (Objects.equals(color, "BLACK")) {
             GameData updatedData = new GameData(
                     gameID,
@@ -53,6 +56,8 @@ public class MemoryGameDAO implements GameDAO {
                     username,
                     gameData.gameName(),
                     gameData.game() );
+
+            allGameData.put(gameID, updatedData);
         }
     }
 }

@@ -6,7 +6,6 @@ import dataaccess.ErrorStatusMessage;
 import requests.ColorGameIDRequest;
 import requests.JoinRequest;
 import results.JoinResult;
-import results.ListResult;
 import service.GameService;
 import spark.Request;
 import spark.Response;
@@ -35,6 +34,11 @@ public class JoinHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);
             }
+            if(!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK")) {
+                res.status(400);
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
+                return new Gson().toJson(errorResponse);
+            }
             JoinResult result = gameService.join(request);
             res.status(200);
             return new Gson().toJson(result);
@@ -48,8 +52,8 @@ public class JoinHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", e.getMessage());
                 return new Gson().toJson(errorResponse);
             } else if (Objects.equals(e.getMessage(), "Error: already taken")) {
-                res.status(400);
-                ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", e.getMessage());
+                res.status(403);
+                ErrorStatusMessage errorResponse = new ErrorStatusMessage("403", e.getMessage());
                 return new Gson().toJson(errorResponse);
             } else {
                 res.status(500);
