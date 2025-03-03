@@ -9,6 +9,7 @@ import spark.*;
 
 public class Server {
     private UserService userService;
+    private GameService gameService;
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -17,11 +18,13 @@ public class Server {
         MemoryUserDAO userDAO = new MemoryUserDAO();
         MemoryAuthDAO authDAO = new MemoryAuthDAO();
         this.userService = new UserService(authDAO, userDAO);
+        this.gameService = new GameService(authDAO, userDAO);
+
 
         RegisterHandler registerHandler = new RegisterHandler(userService);
         LoginHandler loginHandler = new LoginHandler(userService);
         LogoutHandler logoutHandler = new LogoutHandler(userService);
-        CreateHandler createHandler = new CreateHandler(userService);
+        CreateHandler createHandler = new CreateHandler(gameService);
 
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", registerHandler);

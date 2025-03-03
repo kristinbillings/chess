@@ -69,6 +69,4 @@ public class UserService {
         LogoutResult result = new LogoutResult("OK");
         return result;
     }
-    //public void logout(UserData user) {}
-
 }
