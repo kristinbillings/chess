@@ -28,6 +28,7 @@ public class Server {
         LogoutHandler logoutHandler = new LogoutHandler(userService);
         CreateHandler createHandler = new CreateHandler(gameService);
         ListHandler listHandler = new ListHandler(gameService);
+        JoinHandler joinHandler = new JoinHandler(gameService);
 
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", registerHandler);
@@ -35,6 +36,7 @@ public class Server {
         Spark.delete("/session", logoutHandler);
         Spark.post("/game", createHandler);
         Spark.get("/game", listHandler);
+        Spark.put("/game", joinHandler);
 
         Spark.delete("/db",(req, res) -> {
             userDAO.clear();

@@ -48,10 +48,16 @@ public class GameService {
     public ListResult listGames(ListRequest request) throws DataAccessException {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
         if (authData == null){
-            throw new DataAccessException("Error: Unauthorized");
+            throw new DataAccessException("Error: unauthorized");
         }
 
         Map<Integer, GameData> allGames = gameDAO.getAllGameData();
+
+        if (allGames == null) {
+            throw new DataAccessException("Error: no current games");
+        }
         ListResult result = new ListResult(allGames);
+
+        return result;
     }
 }
