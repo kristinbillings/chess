@@ -12,9 +12,10 @@ public class MemoryAuthDAO implements AuthDAO {
         this.allAuthData = new HashMap<>();
     }
 
+
     @Override
     public void createAuth(AuthData authData) {
-        allAuthData.put(authData.username(),authData);
+        allAuthData.put(authData.authToken(),authData);
     }
 
     @Override
@@ -22,5 +23,15 @@ public class MemoryAuthDAO implements AuthDAO {
         if (!allAuthData.isEmpty()){
             allAuthData.clear();
         }
+    }
+
+    @Override
+    public AuthData getUserAuthData(String authToken) {
+        return allAuthData.get(authToken);
+    }
+
+    @Override
+    public void deleteAuth(AuthData authData){
+        allAuthData.remove(authData.authToken());
     }
 }

@@ -5,7 +5,6 @@ import dataaccess.MemoryUserDAO;
 import dataaccess.MemoryAuthDAO;
 import model.UserData;
 import model.AuthData;
-import org.eclipse.jetty.server.Authentication;
 import requests.*;
 import responses.*;
 
@@ -59,7 +58,17 @@ public class UserService {
         return response;
     }
 
+    public LogoutResponse logout(LogoutRequest request) throws DataAccessException {
+        AuthData authData = authDAO.getUserAuthData(request.authToken());
 
+        if (authData.authToken() == null){
+            throw new DataAccessException("Error: no authtoken");
+        }
+        authDAO.deleteAuth(authData);
+
+        LogoutResponse response = new LogoutResponse("OK");
+        return response;
+    }
     //public void logout(UserData user) {}
 
 }
