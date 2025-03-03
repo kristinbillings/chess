@@ -13,7 +13,7 @@ import results.LoginResult;
 import results.RegisterResult;
 import results.LogoutResult;
 
-public class LogoutTests {
+public class LoginLogoutTests {
     private UserService userService;
     private MemoryAuthDAO authDAO;
     private MemoryUserDAO userDAO;
@@ -33,6 +33,29 @@ public class LogoutTests {
         RegisterResult register = userService.register(request);
     }
 
+    //LOGIN TESTS
+    @Test
+    public void testValidRLogin() throws DataAccessException {
+        LoginRequest request = new LoginRequest("Steve","urmom");
+        LoginResult actual = userService.login(request);
+
+        String username = "Steve";
+        String authToken = actual.authToken();
+        expected = new LoginResult(username,authToken);
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testInvalidLogin() throws DataAccessException {
+        LoginRequest request = new LoginRequest("Steve","urmo");
+
+        Assertions.assertThrows(DataAccessException.class, () -> {
+            userService.login(request);
+        }, "Error: unauthorized");
+    }
+
+    //LOGOUT TESTS
     @Test
     public void testValidLogout() throws DataAccessException {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
