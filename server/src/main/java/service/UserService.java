@@ -19,7 +19,6 @@ public class UserService {
     public UserService(MySQLAuthDAO authDAO, MySQLUserDAO userDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;
-
     }
 
     private String generateToken() {

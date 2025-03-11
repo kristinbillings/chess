@@ -15,10 +15,12 @@ import results.JoinResult;
 import java.util.*;
 
 public class GameService {
-    private MemoryAuthDAO authDAO;
-    private MemoryGameDAO gameDAO;
+    //private MemoryAuthDAO authDAO;
+    //private MemoryGameDAO gameDAO;
+    private MySQLAuthDAO authDAO;
+    private MySQLGameDAO gameDAO;
 
-    public GameService(MemoryAuthDAO authDAO, MemoryUserDAO userDAO, MemoryGameDAO gameDAO) {
+    public GameService(MySQLAuthDAO authDAO, MySQLGameDAO gameDAO) {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
     }
