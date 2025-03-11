@@ -35,7 +35,7 @@ public class MySQLAuthDAO implements AuthDAO {
                 ps.setString(1, authToken);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return readAuthData(rs);
+                        return new AuthData(rs.getString("authToken"), rs.getString("username"));
                     }
                 }
             }
@@ -49,13 +49,6 @@ public class MySQLAuthDAO implements AuthDAO {
     public void deleteAuth(AuthData authData) throws DataAccessException{
         var statement = "DELETE FROM authData WHERE userName=?";
         executeUpdate(statement, authData.username());
-    }
-
-    private AuthData readAuthData(ResultSet rs) throws SQLException {
-        var authToken = rs.getString("authToken");
-        var json = rs.getString("json");
-        var authData = new Gson().fromJson(json, UserData.class);
-        return authData.getClass().(authToken);
     }
 
     private int executeUpdate(String statement, Object... params) throws DataAccessException {

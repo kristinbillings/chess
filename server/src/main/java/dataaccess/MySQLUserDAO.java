@@ -21,7 +21,7 @@ public class MySQLUserDAO implements UserDAO{
                 ps.setString(1, username);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return readUserData(rs);
+                        return new UserData(rs.getString("username"), rs.getString("password"), rs.getString("email"));
                     }
                 }
             }
@@ -44,13 +44,6 @@ public class MySQLUserDAO implements UserDAO{
         executeUpdate(statement);
     }
 
-
-    private UserData readUserData(ResultSet rs) throws SQLException {
-        var username = rs.getString("username");
-        var json = rs.getString("json");
-        var userData = new Gson().fromJson(json, UserData.class);
-        return userData.setId(username);
-    }
 
     private int executeUpdate(String statement, Object... params) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
