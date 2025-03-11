@@ -2,6 +2,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
+import dataaccess.ResponseException;
 import service.UserService;
 import spark.*;
 import requests.RegisterRequest;
@@ -14,7 +15,7 @@ public class RegisterHandler implements Route {
         this.userService = userService;
     };
 
-    public Object handle(Request req, Response res) throws DataAccessException {
+    public Object handle(Request req, Response res) {
         RegisterRequest request = new Gson().fromJson(req.body(), RegisterRequest.class);
 
         try {
@@ -31,7 +32,8 @@ public class RegisterHandler implements Route {
             res.status(403);
             ErrorStatusMessage errorResponse = new ErrorStatusMessage("403", e.getMessage());
             return new Gson().toJson(errorResponse);
-
+        } catch (ResponseException e) {
+            return new Gson().toJson(e.getMessage());
         }
 
     }

@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
+import dataaccess.ResponseException;
 import requests.LogoutRequest;
 import results.LogoutResult;
 import service.UserService;
@@ -19,7 +20,7 @@ public class LogoutHandler implements Route {
         this.userService = userService;
     };
 
-    public Object handle(Request req, Response res) throws DataAccessException {
+    public Object handle(Request req, Response res) {
         String authToken = req.headers("authorization");
         LogoutRequest request = new LogoutRequest(authToken);
 
@@ -37,6 +38,8 @@ public class LogoutHandler implements Route {
         catch(DataAccessException e) {
             ErrorMessages errorMessage = new ErrorMessages();
             return new Gson().toJson(errorMessage.errorMessages(e,res));
+        } catch (ResponseException e) {
+            return new Gson().toJson(e.getMessage());
         }
     }
 }

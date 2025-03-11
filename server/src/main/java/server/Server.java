@@ -10,7 +10,7 @@ public class Server {
     private UserService userService;
     private GameService gameService;
 
-    public int run(int desiredPort) throws DataAccessException,ResponseException {
+    public int run(int desiredPort) {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
 

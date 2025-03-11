@@ -10,9 +10,14 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
 public class MySQLAuthDAO implements AuthDAO {
-    public MySQLAuthDAO() throws ResponseException {
-        configureDatabase();
-    }
+    public MySQLAuthDAO() {
+        try {
+            DatabaseManager.createDatabase();
+            configureDatabase();
+        } catch (ResponseException e) {
+            System.err.println("Error configuring the database: " + e.getMessage());
+            throw new RuntimeException("Database configuration failed", e);  // You can customize this if you need to propagate it
+        }    }
 
     @Override
     public void createAuth(AuthData authData) throws ResponseException {
@@ -87,16 +92,16 @@ public class MySQLAuthDAO implements AuthDAO {
             """
     };
 
-    private void configureDatabase() throws ResponseException {
-        DatabaseManager.createDatabase();
+    private void configureDatabase() {
+        //DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
             for (var statement : createStatements) {
                 try (var preparedStatement = conn.prepareStatement(statement)) {
                     preparedStatement.executeUpdate();
                 }
             }
-        } catch (SQLException ex) {
-            throw new ResponseException(500, String.format("Unable to configure database: %s", ex.getMessage()));
+        } catch (SQLException | ResponseException ex) {
+            throw new RuntimeException("Unable to configure database: %s");
         }
     }
 }

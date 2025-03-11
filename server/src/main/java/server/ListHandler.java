@@ -20,7 +20,7 @@ public class ListHandler implements Route {
         this.gameService = gameService;
     };
 
-    public Object handle(Request req, Response res) throws DataAccessException {
+    public Object handle(Request req, Response res) {
         String authToken = req.headers("authorization");
         ListRequest request = new ListRequest(authToken);
 

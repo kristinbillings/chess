@@ -22,7 +22,7 @@ public class JoinHandler implements Route {
 
     ;
 
-    public Object handle(Request req, Response res) throws DataAccessException {
+    public Object handle(Request req, Response res) {
         String authToken = req.headers("authorization");
         ColorGameIDRequest colorID = new Gson().fromJson(req.body(), ColorGameIDRequest.class);
 

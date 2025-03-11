@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
+import dataaccess.ResponseException;
 import service.UserService;
 import spark.Request;
 import spark.Response;
@@ -35,6 +36,8 @@ public class LoginHandler implements Route {
         catch(DataAccessException e) {
             ErrorMessages errorMessage = new ErrorMessages();
             return new Gson().toJson(errorMessage.errorMessages(e,res));
+        } catch (ResponseException e) {
+            return new Gson().toJson(e.getMessage());
         }
     };
 }
