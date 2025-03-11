@@ -10,25 +10,25 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
 public class MySQLAuthDAO implements AuthDAO {
-    public MySQLAuthDAO() throws DataAccessException {
+    public MySQLAuthDAO() throws ResponseException {
         configureDatabase();
     }
 
     @Override
-    public void createAuth(AuthData authData) throws DataAccessException {
+    public void createAuth(AuthData authData) throws ResponseException {
         var statement = "INSERT INTO AuthData (username, authToken, json) VALUES (?, ?, ?)";
         var json = new Gson().toJson(authData);
         var id = executeUpdate(statement, authData.username(), authData.authToken(), json);
     }
 
     @Override
-    public void clear () throws DataAccessException {
+    public void clear () throws ResponseException {
         var statement = "TRUNCATE AuthData";
         executeUpdate(statement);
     }
 
     @Override
-    public AuthData getUserAuthData(String authToken) throws DataAccessException {
+    public AuthData getUserAuthData(String authToken) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "SELECT json FROM authData WHERE authToken=?";
             try (var ps = conn.prepareStatement(statement)) {
@@ -40,18 +40,18 @@ public class MySQLAuthDAO implements AuthDAO {
                 }
             }
         } catch (Exception e) {
-            throw new DataAccessException("ERROR:Unable to read data");
+            throw new ResponseException(500, String.format("Unable to read data: %s", e.getMessage()));
         }
         return null;
     }
 
     @Override
-    public void deleteAuth(AuthData authData) throws DataAccessException{
+    public void deleteAuth(AuthData authData) throws ResponseException{
         var statement = "DELETE FROM authData WHERE userName=?";
         executeUpdate(statement, authData.username());
     }
 
-    private int executeUpdate(String statement, Object... params) throws DataAccessException {
+    private int executeUpdate(String statement, Object... params) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
             try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < params.length; i++) {
@@ -71,7 +71,7 @@ public class MySQLAuthDAO implements AuthDAO {
                 return 0;
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Error: unable to update user database");
+            throw new ResponseException(500, String.format("unable to update database: %s, %s", statement, e.getMessage()));
         }
     }
 
@@ -87,7 +87,7 @@ public class MySQLAuthDAO implements AuthDAO {
             """
     };
 
-    private void configureDatabase() throws DataAccessException {
+    private void configureDatabase() throws ResponseException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
             for (var statement : createStatements) {
@@ -96,7 +96,7 @@ public class MySQLAuthDAO implements AuthDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("ERROR: Unable to configure user database");
+            throw new ResponseException(500, String.format("Unable to configure database: %s", ex.getMessage()));
         }
     }
 }

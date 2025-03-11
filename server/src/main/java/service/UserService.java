@@ -26,7 +26,7 @@ public class UserService {
         return UUID.randomUUID().toString();
     }
 
-    public RegisterResult register(RegisterRequest request) throws DataAccessException {
+    public RegisterResult register(RegisterRequest request) throws DataAccessException,ResponseException {
         if (userDAO.getUserData(request.username()) != null){
             throw new DataAccessException("Error: already taken");
         }
@@ -42,7 +42,7 @@ public class UserService {
         return result;
     }
 
-    public LoginResult login(LoginRequest request) throws DataAccessException {
+    public LoginResult login(LoginRequest request) throws DataAccessException,ResponseException {
         UserData userData = userDAO.getUserData(request.username());
 
         if (userData == null){
@@ -60,7 +60,7 @@ public class UserService {
         return result;
     }
 
-    public LogoutResult logout(LogoutRequest request) throws DataAccessException {
+    public LogoutResult logout(LogoutRequest request) throws DataAccessException,ResponseException {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
 
         if (authData == null){

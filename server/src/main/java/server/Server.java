@@ -1,8 +1,6 @@
 package server;
 
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryGameDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.*;
 import org.eclipse.jetty.util.log.Log;
 import service.GameService;
 import service.UserService;
@@ -12,15 +10,18 @@ public class Server {
     private UserService userService;
     private GameService gameService;
 
-    public int run(int desiredPort) {
+    public int run(int desiredPort) throws DataAccessException,ResponseException {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
 
-        MemoryUserDAO userDAO = new MemoryUserDAO();
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MemoryUserDAO userDAO1 = new MemoryUserDAO();
+        MemoryAuthDAO authDAO1 = new MemoryAuthDAO();
+        //MemoryGameDAO gameDAO = new MemoryGameDAO();
+        MySQLUserDAO userDAO = new MySQLUserDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         MemoryGameDAO gameDAO = new MemoryGameDAO();
         this.userService = new UserService(authDAO, userDAO);
-        this.gameService = new GameService(authDAO, userDAO, gameDAO);
+        this.gameService = new GameService(authDAO1, userDAO1, gameDAO);
 
 
         RegisterHandler registerHandler = new RegisterHandler(userService);
