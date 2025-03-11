@@ -33,14 +33,14 @@ public class MySQLUserDAO implements UserDAO{
 
     @Override
     public void createUser(UserData userData) throws DataAccessException {
-        var statement = "INSERT INTO Userdata (username, password, email, json) VALUES (?, ?, ?, ?)";
+        var statement = "INSERT INTO UserData (username, password, email, json) VALUES (?, ?, ?, ?)";
         var json = new Gson().toJson(userData);
         var id = executeUpdate(statement, userData.username(), userData.password(),userData.email(), json);
     }
 
     @Override
     public void clear() throws DataAccessException {
-        var statement = "TRUNCATE pet";
+        var statement = "TRUNCATE UserData";
         executeUpdate(statement);
     }
 
@@ -101,7 +101,7 @@ public class MySQLUserDAO implements UserDAO{
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException(500, String.format("Unable to configure database: %s", ex.getMessage()));
+            throw new DataAccessException("ERROR: Unable to configure user database");
         }
     }
 }
