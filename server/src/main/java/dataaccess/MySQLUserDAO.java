@@ -3,6 +3,7 @@ package dataaccess;
 import com.google.gson.Gson;
 import model.UserData;
 import java.sql.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
@@ -35,7 +36,8 @@ public class MySQLUserDAO implements UserDAO{
     public void createUser(UserData userData) throws DataAccessException {
         var statement = "INSERT INTO UserData (username, password, email, json) VALUES (?, ?, ?, ?)";
         var json = new Gson().toJson(userData);
-        var id = executeUpdate(statement, userData.username(), userData.password(),userData.email(), json);
+        var secretPassword = hashPassword(userData.password());
+        var id = executeUpdate(statement, userData.username(), secretPassword,userData.email(), json);
     }
 
     @Override
@@ -69,6 +71,10 @@ public class MySQLUserDAO implements UserDAO{
         }
     }
 
+    private String hashPassword(String password) {
+        String hash = BCrypt.hashpw(password, BCrypt.gensalt());
+
+    }
 
     private final String[] createStatements = {
             """
@@ -83,7 +89,6 @@ public class MySQLUserDAO implements UserDAO{
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """
     };
-
 
     private void configureDatabase() throws DataAccessException {
         DatabaseManager.createDatabase();

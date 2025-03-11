@@ -1,8 +1,6 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.MemoryUserDAO;
-import dataaccess.MemoryAuthDAO;
+import dataaccess.*;
 import model.UserData;
 import model.AuthData;
 import requests.*;
@@ -12,10 +10,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class UserService {
-    private MemoryUserDAO userDAO;
-    private MemoryAuthDAO authDAO;
+    //private MemoryUserDAO userDAO;
+    //private MemoryAuthDAO authDAO;
+    private MySQLUserDAO userDAO;
+    private MySQLAuthDAO authDAO;
 
-    public UserService(MemoryAuthDAO authDAO, MemoryUserDAO userDAO) {
+            //changed this from memory to SQL
+    public UserService(MySQLAuthDAO authDAO, MySQLUserDAO userDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;
 
