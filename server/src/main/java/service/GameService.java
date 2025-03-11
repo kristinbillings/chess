@@ -18,12 +18,10 @@ import results.JoinResult;
 import java.util.*;
 
 public class GameService {
-    private MemoryUserDAO userDAO;
     private MemoryAuthDAO authDAO;
     private MemoryGameDAO gameDAO;
 
     public GameService(MemoryAuthDAO authDAO, MemoryUserDAO userDAO, MemoryGameDAO gameDAO) {
-        this.userDAO = userDAO;
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
     }

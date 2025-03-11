@@ -2,10 +2,12 @@ package dataaccess;
 
 import model.AuthData;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
 
-public class DatabaseAuthDAO implements AuthDAO {
+public class MySQLAuthDAO implements AuthDAO {
+    public MySQLAuthDAO() throws DataAccessException {
+        DatabaseManager.createDatabase();
+    }
+
     @Override
     public void createAuth(AuthData authData) {
         allAuthData.put(authData.authToken(),authData);

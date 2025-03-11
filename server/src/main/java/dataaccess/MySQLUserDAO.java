@@ -2,12 +2,9 @@ package dataaccess;
 
 import model.UserData;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
-
-public class DatabaseUserDAO implements UserDAO{
-    public DatabaseUserDAO() throws DataAccessException {
-        configureDatabase();
+public class MySQLUserDAO implements UserDAO{
+    public MySQLUserDAO() throws DataAccessException {
+        DatabaseManager.createDatabase();
     }
 
     @Override

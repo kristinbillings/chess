@@ -18,6 +18,7 @@ public class UserService {
     public UserService(MemoryAuthDAO authDAO, MemoryUserDAO userDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;
+
     }
 
     private String generateToken() {
