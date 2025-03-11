@@ -3,7 +3,9 @@ package dataaccess;
 import com.google.gson.Gson;
 import model.UserData;
 import java.sql.*;
-import java.util.Properties;
+
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;
 
 
 public class MySQLUserDAO implements UserDAO{
@@ -12,36 +14,68 @@ public class MySQLUserDAO implements UserDAO{
     }
 
     @Override
-    public UserData getUserData(String username) {
+    public UserData getUserData(String username) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT id, json FROM username WHERE id=?";
+            var statement = "SELECT username, json FROM userData WHERE username=?";
             try (var ps = conn.prepareStatement(statement)) {
-                ps.setInt(1, id);
+                ps.setString(1, username);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return readPet(rs);
+                        return readUserData(rs);
                     }
                 }
             }
         } catch (Exception e) {
-            throw new ResponseException(500, String.format("Unable to read data: %s", e.getMessage()));
+            throw new DataAccessException("ERROR: Unable to read data in user");
         }
         return null;
-        return allUserData.get(username);
     }
 
     @Override
-    public void createUser(UserData userData) {
+    public void createUser(UserData userData) throws DataAccessException {
         var statement = "INSERT INTO Userdata (username, password, email, json) VALUES (?, ?, ?, ?)";
         var json = new Gson().toJson(userData);
         var id = executeUpdate(statement, userData.username(), userData.password(),userData.email(), json);
-        return new UserData(id, pet.name(), pet.type());
     }
 
     @Override
-    public void clear() {
-        allUserData.clear();
+    public void clear() throws DataAccessException {
+        var statement = "TRUNCATE pet";
+        executeUpdate(statement);
     }
+
+
+    private UserData readUserData(ResultSet rs) throws SQLException {
+        var username = rs.getString("username");
+        var json = rs.getString("json");
+        var userData = new Gson().fromJson(json, UserData.class);
+        return userData.setId(username);
+    }
+
+    private int executeUpdate(String statement, Object... params) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    if (param instanceof String p) ps.setString(i + 1, p);
+                    //else if (param instanceof Integer p) ps.setInt(i + 1, p);
+                    else if (param instanceof UserData p) ps.setString(i + 1, p.toString());
+                    else if (param == null) ps.setNull(i + 1, NULL);
+                }
+                ps.executeUpdate();
+
+                var rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error: unable to update user database");
+        }
+    }
+
 
     private final String[] createStatements = {
             """
