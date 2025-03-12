@@ -3,11 +3,9 @@ package dataaccess;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import model.GameData;
-import model.UserData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -82,8 +80,6 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public void updateGame(Integer gameID, String username, String color) throws ResponseException{
-        GameData gameData = getGame(gameID);
-        //GameData updatedData = gameData;
         if(Objects.equals(color, "WHITE")) {
             try (var conn = DatabaseManager.getConnection()) {
                 var statement = "UPDATE GameData SET whiteUsername = ? WHERE gameID = ?";
