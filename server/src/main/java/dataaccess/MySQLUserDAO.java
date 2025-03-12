@@ -81,6 +81,11 @@ public class MySQLUserDAO implements UserDAO{
         return hash;
     }
 
+    public boolean checkPassword(String hashedPW, String reqPW) {
+        var hashReqPW = BCrypt.hashpw(reqPW, BCrypt.gensalt());
+        return BCrypt.checkpw(hashedPW,hashReqPW);
+    }
+
     private final String[] createStatements = {
             """
             CREATE TABLE IF NOT EXISTS  UserData (

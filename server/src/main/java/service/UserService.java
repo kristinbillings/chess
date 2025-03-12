@@ -51,7 +51,7 @@ public class UserService {
         if (userData == null){
             throw new DataAccessException("Error: unauthorized");
         }
-        if (!Objects.equals(userData.password(), request.password())) {
+        if (!userDAO.checkPassword(userData.password(), request.password())) {
             throw new DataAccessException("Error: unauthorized");
         }
 
