@@ -25,7 +25,7 @@ public class GameService {
         this.gameDAO = gameDAO;
     }
 
-    public CreateResult create(CreateRequest request) throws DataAccessException {
+    public CreateResult create(CreateRequest request) throws DataAccessException,ResponseException {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
 
         if (authData == null){
@@ -44,7 +44,7 @@ public class GameService {
         return result;
     }
 
-    public ListResult listGames(ListRequest request) throws DataAccessException {
+    public ListResult listGames(ListRequest request) throws DataAccessException, ResponseException {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
         if (authData == null){
             throw new DataAccessException("Error: unauthorized");
@@ -70,7 +70,7 @@ public class GameService {
         return new ListResult(listAllGames);
     }
 
-    public JoinResult join(JoinRequest request) throws DataAccessException {
+    public JoinResult join(JoinRequest request) throws DataAccessException,ResponseException {
         AuthData authData = authDAO.getUserAuthData(request.authToken());
         if (authData == null){
             throw new DataAccessException("Error: unauthorized");

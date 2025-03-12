@@ -6,15 +6,15 @@ import model.GameData;
 import java.util.Map;
 
 public interface GameDAO {
-    void createGame(GameData gameData);
+    void createGame(GameData gameData) throws ResponseException;
 
-    int getGameID();
+    int getGameID() throws ResponseException;
 
-    Map<Integer, GameData> getAllGameData();
+    Map<Integer, GameData> getAllGameData() throws ResponseException;
 
-    GameData getGame(Integer gameID);
+    GameData getGame(Integer gameID) throws ResponseException;
 
-    void updateGame(Integer gameID, String username, String color);
+    void updateGame(Integer gameID, String username, String color) throws ResponseException;
 
-    void clear();
+    void clear() throws ResponseException;
 }
