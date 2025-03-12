@@ -1,9 +1,6 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryGameDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,17 +15,17 @@ import java.util.Arrays;
 public class CreateListJoinTests {
     private UserService userService;
     private GameService gameService;
-    private MemoryAuthDAO authDAO;
-    private MemoryUserDAO userDAO;
-    private MemoryGameDAO gameDAO;
+    private MySQLAuthDAO authDAO; //changed from memory to database
+    private MySQLUserDAO userDAO; //changed from memory to database
+    private MySQLGameDAO gameDAO; //changed from memory to database
 
     @BeforeEach
     public void setUp() {
-        authDAO = new MemoryAuthDAO();
-        userDAO = new MemoryUserDAO();
-        gameDAO = new MemoryGameDAO();
+        authDAO = new MySQLAuthDAO(); //changed from memory to database
+        userDAO = new MySQLUserDAO(); //changed from memory to database
+        gameDAO = new MySQLGameDAO(); //changed from memory to database
         userService = new UserService(authDAO, userDAO);
-        gameService = new GameService(authDAO, userDAO, gameDAO);
+        gameService = new GameService(authDAO, gameDAO); //removed userDAO
     }
 
     @BeforeEach

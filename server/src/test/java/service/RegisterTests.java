@@ -1,8 +1,6 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,20 +9,20 @@ import results.RegisterResult;
 
 public class RegisterTests {
     private UserService userService;
-    private MemoryAuthDAO authDAO;
-    private MemoryUserDAO userDAO;
+    private MySQLAuthDAO authDAO; //changed from memory to database
+    private MySQLUserDAO userDAO; //changed from memory to database
     private RegisterResult expected;
 
     @BeforeEach
     public void setUp(){
-        authDAO = new MemoryAuthDAO();
-        userDAO = new MemoryUserDAO();
+        authDAO = new MySQLAuthDAO(); //changed from memory to database
+        userDAO = new MySQLUserDAO(); //changed from memory to database
         userService = new UserService(authDAO,userDAO);
         //expected = new RegisterResult("","");
     }
 
     @Test
-    public void testValidRegistration() throws DataAccessException {
+    public void testValidRegistration() throws DataAccessException,ResponseException {
         RegisterRequest request = new RegisterRequest("Steve","urmom","hottie@gmail.com");
         RegisterResult actual = userService.register(request);
 
@@ -37,7 +35,7 @@ public class RegisterTests {
     }
 
     @Test
-    public void testInvalidRegistration() throws DataAccessException {
+    public void testInvalidRegistration() throws DataAccessException,ResponseException {
         RegisterRequest request = new RegisterRequest(null,"urmom","hottie@gmail.com");
         RegisterResult actual = userService.register(request);
 

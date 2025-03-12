@@ -1,8 +1,6 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,27 +13,27 @@ import results.LogoutResult;
 
 public class LoginLogoutTests {
     private UserService userService;
-    private MemoryAuthDAO authDAO;
-    private MemoryUserDAO userDAO;
+    private MySQLAuthDAO authDAO; //changed from memory to database
+    private MySQLUserDAO userDAO; //changed from memory to database
     private LoginResult expected;
 
     @BeforeEach
     public void setUp(){
-        authDAO = new MemoryAuthDAO();
-        userDAO = new MemoryUserDAO();
+        authDAO = new MySQLAuthDAO(); //changed from memory to database
+        userDAO = new MySQLUserDAO(); //changed from memory to database
         userService = new UserService(authDAO,userDAO);
         //expected = new LoginResult("","");
     }
 
     @BeforeEach
-    public void createUser() throws DataAccessException {
+    public void createUser() throws DataAccessException,ResponseException  {
         RegisterRequest request = new RegisterRequest("Steve","urmom","hottie@gmail.com");
         RegisterResult register = userService.register(request);
     }
 
     //LOGIN TESTS
     @Test
-    public void testValidRLogin() throws DataAccessException {
+    public void testValidRLogin() throws DataAccessException, ResponseException {
         LoginRequest request = new LoginRequest("Steve","urmom");
         LoginResult actual = userService.login(request);
 
@@ -57,7 +55,7 @@ public class LoginLogoutTests {
 
     //LOGOUT TESTS
     @Test
-    public void testValidLogout() throws DataAccessException {
+    public void testValidLogout() throws DataAccessException,ResponseException  {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         LogoutRequest request = new LogoutRequest(actual1.authToken());
@@ -69,7 +67,7 @@ public class LoginLogoutTests {
     }
 
     @Test
-    public void testInvalidAuthTokenLogout() throws DataAccessException {
+    public void testInvalidAuthTokenLogout() throws DataAccessException,ResponseException  {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         LogoutRequest request = new LogoutRequest("23nlkjdkljadf");
