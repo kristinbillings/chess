@@ -23,7 +23,7 @@ public class MySQLUserDAO implements UserDAO{
     @Override
     public UserData getUserData(String username) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT username, json FROM userData WHERE username=?";
+            var statement = "SELECT username, password, email FROM userData WHERE username=?";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, username);
                 try (var rs = ps.executeQuery()) {
@@ -40,10 +40,9 @@ public class MySQLUserDAO implements UserDAO{
 
     @Override
     public void createUser(UserData userData) throws ResponseException {
-        var statement = "INSERT INTO UserData (username, password, email, json) VALUES (?, ?, ?, ?)";
-        var json = new Gson().toJson(userData);
+        var statement = "INSERT INTO UserData (username, password, email) VALUES (?, ?, ?)";
         var secretPassword = hashPassword(userData.password());
-        var id = executeUpdate(statement, userData.username(), secretPassword,userData.email(), json);
+        var id = executeUpdate(statement, userData.username(), secretPassword,userData.email());
     }
 
     @Override
@@ -82,8 +81,7 @@ public class MySQLUserDAO implements UserDAO{
     }
 
     public boolean checkPassword(String hashedPW, String reqPW) {
-        var hashReqPW = BCrypt.hashpw(reqPW, BCrypt.gensalt());
-        return BCrypt.checkpw(hashedPW,hashReqPW);
+        return BCrypt.checkpw(reqPW,hashedPW);
     }
 
     private final String[] createStatements = {
@@ -92,10 +90,7 @@ public class MySQLUserDAO implements UserDAO{
               `username` varchar(256) NOT NULL  ,
               `password` varchar(256) NOT NULL,
               `email` varchar(256) NOT NULL,
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`id`),
-              INDEX(username),
-              INDEX(email)
+              PRIMARY KEY (`username`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """
     };

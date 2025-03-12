@@ -6,9 +6,7 @@ import model.GameData;
 import java.util.Map;
 
 public interface GameDAO {
-    void createGame(GameData gameData) throws ResponseException;
-
-    int getGameID() throws ResponseException;
+    int createGame(GameData gameData) throws ResponseException;
 
     Map<Integer, GameData> getAllGameData() throws ResponseException;
 

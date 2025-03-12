@@ -55,6 +55,8 @@ public class Server {
             return "{}";
         });
 
+        Spark.exception(Exception.class, this::exceptionHandler);
+
         //This line initializes the server and can be removed once you have a functioning endpoint 
         //Spark.init();
 
@@ -62,9 +64,13 @@ public class Server {
         return Spark.port();
     }
 
+    private void exceptionHandler(Exception ex, Request req, Response res) {
+        res.status(500);
+        res.body(STR."{\"message\": \"Error:\{ex.getMessage()}\"} ");
+    }
+
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
     }
-
 }

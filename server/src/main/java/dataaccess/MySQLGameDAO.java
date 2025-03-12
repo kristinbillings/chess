@@ -28,24 +28,20 @@ public class MySQLGameDAO implements GameDAO {
         }
     }
 
-    @Override
-    public int getGameID() {
-        numGames = numGames + 1;
-        return numGames - 1;
-    }
 
     @Override
-    public void createGame(GameData gameData) throws ResponseException{
-        var statement = "INSERT INTO UserData (gameID, whiteUsername, blackUsername, gameName, game, json) VALUES (?, ?, ?, ?, ?, ?)";
-        var json = new Gson().toJson(gameData);
-        int gameID = getGameID();
-        var id = executeUpdate(String.valueOf(gameID), gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), gameData.game(), json);    }
+    public int createGame(GameData gameData) throws ResponseException{
+        var statement = "INSERT INTO GameData (whiteUsername, blackUsername, gameName, game) VALUES (?, ?, ?, ?)";
+        //var json = new Gson().toJson(gameData);
+        var id = executeUpdate(statement, gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), gameData.game());
+        return id;
+    }
 
     @Override
     public Map<Integer, GameData> getAllGameData() throws ResponseException{
         Map<Integer, GameData> result = new HashMap<>();
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT gameID, json FROM GameData";
+            var statement = "SELECT gameID,whiteUsername,blackUsername, gameName, game FROM GameData";
             try (var ps = conn.prepareStatement(statement)) {
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -63,7 +59,7 @@ public class MySQLGameDAO implements GameDAO {
     @Override
     public GameData getGame(Integer gameID) throws ResponseException{
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT gameID, json FROM GameData WHERE gameID=?";
+            var statement = "SELECT gameID,whiteUsername,blackUsername,gameName,game FROM GameData WHERE gameID=?";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setInt(1, gameID);
                 try (var rs = ps.executeQuery()) {
@@ -86,7 +82,7 @@ public class MySQLGameDAO implements GameDAO {
                 try (var ps = conn.prepareStatement(statement)) {
                     ps.setString(1, username);
                     ps.setInt(2, gameID);
-                    var rs = ps.executeQuery();
+                    ps.executeUpdate();
                 }
             } catch (Exception e) {
                 throw new ResponseException(500, String.format("Unable to read data: %s", e.getMessage()));
@@ -130,7 +126,7 @@ public class MySQLGameDAO implements GameDAO {
                     var param = params[i];
                     if (param instanceof String p) ps.setString(i + 1, p);
                     else if (param instanceof Integer p) ps.setInt(i + 1, p);
-                    else if (param instanceof ChessGame p) ps.setString(i + 1, p.toString());
+                    else if (param instanceof ChessGame p) ps.setString(i + 1, new Gson().toJson(p));
                     else if (param == null) ps.setNull(i + 1, NULL);
                 }
                 ps.executeUpdate();
@@ -150,15 +146,12 @@ public class MySQLGameDAO implements GameDAO {
     private final String[] createStatements = {
             """
             CREATE TABLE IF NOT EXISTS  GameData (
-              `gameID` int NOT NULL,
-              `whiteUsername` varchar(256) NOT NULL,
-              `blackUsername` varchar(256) NOT NULL,
+              `gameID` int NOT NULL AUTO_INCREMENT,
+              `whiteUsername` varchar(256),
+              `blackUsername` varchar(256),
               `gameName` varchar(256) NOT NULL,
-              `game` ChessGame NOT NULL,
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`gameID`),
-              INDEX(gameID),
-              INDEX(game)
+              `game` TEXT NOT NULL,
+              PRIMARY KEY (`gameID`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """
     };

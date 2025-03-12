@@ -21,9 +21,8 @@ public class MySQLAuthDAO implements AuthDAO {
 
     @Override
     public void createAuth(AuthData authData) throws ResponseException {
-        var statement = "INSERT INTO AuthData (username, authToken, json) VALUES (?, ?, ?)";
-        var json = new Gson().toJson(authData);
-        var id = executeUpdate(statement, authData.username(), authData.authToken(), json);
+        var statement = "INSERT INTO AuthData (username, authToken) VALUES (?, ?)";
+        var id = executeUpdate(statement, authData.username(), authData.authToken());
     }
 
     @Override
@@ -35,12 +34,12 @@ public class MySQLAuthDAO implements AuthDAO {
     @Override
     public AuthData getUserAuthData(String authToken) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT json FROM authData WHERE authToken=?";
+            var statement = "SELECT username FROM authData WHERE authToken=?";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, authToken);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return new AuthData(rs.getString("authToken"), rs.getString("username"));
+                        return new AuthData(authToken, rs.getString("username"));
                     }
                 }
             }
@@ -85,9 +84,7 @@ public class MySQLAuthDAO implements AuthDAO {
             CREATE TABLE IF NOT EXISTS  AuthData (
               `authToken` varchar(256) NOT NULL,
               `username` varchar(256) NOT NULL,
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`authToken`),
-              INDEX(authToken)
+              PRIMARY KEY (`authToken`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """
     };

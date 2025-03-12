@@ -16,15 +16,17 @@ public class MemoryGameDAO implements GameDAO {
         this.numGames = 1;
     }
 
-    @Override
     public int getGameID() {
         numGames = numGames + 1;
         return numGames - 1;
     }
 
     @Override
-    public void createGame(GameData gameData){
-        allGameData.put(gameData.gameID(),gameData);
+    public int createGame(GameData gameData){
+        int gameID = getGameID();
+        gameData = new GameData(gameID, gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), gameData.game());
+        allGameData.put(gameID,gameData);
+        return gameID;
     }
 
     @Override
