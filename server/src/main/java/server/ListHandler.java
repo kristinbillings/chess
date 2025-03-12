@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
+import dataaccess.ResponseException;
 import requests.GameNameRequest;
 import requests.ListRequest;
 import results.ListResult;
@@ -31,6 +32,8 @@ public class ListHandler implements Route {
         } catch( DataAccessException e ) {
             ErrorMessages errorMessage = new ErrorMessages();
             return new Gson().toJson(errorMessage.errorMessages(e,res));
+        } catch (ResponseException e) {
+            throw new RuntimeException(e);
         }
 
     };

@@ -14,14 +14,22 @@ public class Server {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
 
-        MemoryUserDAO userDAO1 = new MemoryUserDAO();
-        MemoryAuthDAO authDAO1 = new MemoryAuthDAO();
-        //MemoryGameDAO gameDAO = new MemoryGameDAO();
+        boolean useMemory = false;
+        if (useMemory) {
+            MemoryUserDAO userDAO = new MemoryUserDAO();
+            MemoryAuthDAO authDAO = new MemoryAuthDAO();
+            MemoryGameDAO gameDAO = new MemoryGameDAO();
+            //this.userService = new UserService(authDAO, userDAO);
+            //this.gameService = new GameService(authDAO, gameDAO);
+        }
+
         MySQLUserDAO userDAO = new MySQLUserDAO();
         MySQLAuthDAO authDAO = new MySQLAuthDAO();
-        MemoryGameDAO gameDAO = new MemoryGameDAO();
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
         this.userService = new UserService(authDAO, userDAO);
-        this.gameService = new GameService(authDAO1, userDAO1, gameDAO);
+        this.gameService = new GameService(authDAO, gameDAO);
+
+
 
 
         RegisterHandler registerHandler = new RegisterHandler(userService);

@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
+import dataaccess.ResponseException;
 import requests.CreateRequest;
 import requests.GameNameRequest;
 import results.CreateResult;
@@ -46,6 +47,8 @@ public class CreateHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
                 return new Gson().toJson(errorResponse);
             }
+        } catch (ResponseException e) {
+            throw new RuntimeException(e);
         }
     };
 }

@@ -15,7 +15,11 @@ public class UserService {
     private MySQLUserDAO userDAO;
     private MySQLAuthDAO authDAO;
 
-            //changed this from memory to SQL
+    /*public UserService(MemoryAuthDAO authDAO, MySQLAuthDAO userDAO) {
+        this.userDAO = userDAO;
+        this.authDAO = authDAO;
+    } */
+
     public UserService(MySQLAuthDAO authDAO, MySQLUserDAO userDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;

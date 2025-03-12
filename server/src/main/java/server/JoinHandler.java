@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
+import dataaccess.ResponseException;
 import requests.ColorGameIDRequest;
 import requests.JoinRequest;
 import results.JoinResult;
@@ -60,6 +61,8 @@ public class JoinHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", e.getMessage());
                 return new Gson().toJson(errorResponse);
             }
+        } catch (ResponseException e) {
+            throw new RuntimeException(e);
         }
     }
 }
