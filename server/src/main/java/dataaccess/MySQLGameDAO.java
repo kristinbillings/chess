@@ -77,7 +77,10 @@ public class MySQLGameDAO implements GameDAO {
     @Override
     public void updateGame(Integer gameID, String username, String color) throws ResponseException{
         if(Objects.equals(color, "WHITE")) {
-            try (var conn = DatabaseManager.getConnection()) {
+            if (getGame(gameID).whiteUsername() != null) {
+                throw new ResponseException(403, "Error: white player already taken");
+            }
+             try (var conn = DatabaseManager.getConnection()) {
                 var statement = "UPDATE GameData SET whiteUsername = ? WHERE gameID = ?";
                 try (var ps = conn.prepareStatement(statement)) {
                     ps.setString(1, username);
@@ -88,12 +91,15 @@ public class MySQLGameDAO implements GameDAO {
                 throw new ResponseException(500, String.format("Unable to read data: %s", e.getMessage()));
             }
         } else if (Objects.equals(color, "BLACK")) {
+            if (getGame(gameID).blackUsername() != null) {
+                throw new ResponseException(403, "Error: black player already taken");
+            }
             try (var conn = DatabaseManager.getConnection()) {
                 var statement = "UPDATE GameData SET blackUsername = ? WHERE gameID = ?";
                 try (var ps = conn.prepareStatement(statement)) {
                     ps.setString(1, username);
                     ps.setInt(2, gameID);
-                    var rs = ps.executeQuery();
+                    ps.executeUpdate();
                 }
             } catch (Exception e) {
                 throw new ResponseException(500, String.format("Unable to read data: %s", e.getMessage()));
