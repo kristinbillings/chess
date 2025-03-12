@@ -29,14 +29,14 @@ public class CreateListJoinTests {
     }
 
     @BeforeEach
-    public void createUser() throws DataAccessException {
+    public void createUser() throws DataAccessException, ResponseException {
         RegisterRequest request = new RegisterRequest("Steve", "urmom", "hottie@gmail.com");
         RegisterResult register = userService.register(request);
     }
 
     //CREATE TESTS
     @Test
-    public void testValidCreateGame() throws DataAccessException {
+    public void testValidCreateGame() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request = new CreateRequest("THe WINNERS", actual1.authToken());
@@ -48,7 +48,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testInvalidAuthTokenCreate() throws DataAccessException {
+    public void testInvalidAuthTokenCreate() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request = new CreateRequest("THe WINNERS", "23nlkjdkljadf");
@@ -59,7 +59,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testInvalidNameCreate() throws DataAccessException {
+    public void testInvalidNameCreate() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request = new CreateRequest(null, actual1.authToken());
@@ -71,7 +71,7 @@ public class CreateListJoinTests {
 
     //LIST TESTS
     @Test
-    public void testValidList2Games() throws DataAccessException {
+    public void testValidList2Games() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request2 = new CreateRequest("THe WINNERS", actual1.authToken());
@@ -100,7 +100,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testValidListNOGames() throws DataAccessException {
+    public void testValidListNOGames() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
 
@@ -113,7 +113,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testInvalidAuthTokenList() throws DataAccessException {
+    public void testInvalidAuthTokenList() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve","urmom");
         LoginResult actual1 = userService.login(request1);
         ListRequest request = new ListRequest("actual1.authToken() lololo");
@@ -125,7 +125,7 @@ public class CreateListJoinTests {
 
     //JOIN TESTS
     @Test
-    public void testValidJoin() throws DataAccessException {
+    public void testValidJoin() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request2 = new CreateRequest("THe WINNERS", actual1.authToken());
@@ -142,7 +142,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testInvalidJoinNOGames() throws DataAccessException {
+    public void testInvalidJoinNOGames() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
 
@@ -155,7 +155,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testInvalidAuthTokenJoin() throws DataAccessException {
+    public void testInvalidAuthTokenJoin() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request2 = new CreateRequest("THe WINNERS", actual1.authToken());
@@ -172,7 +172,7 @@ public class CreateListJoinTests {
     }
 
     @Test
-    public void testInvalidJoinColorAlreadyTaken() throws DataAccessException {
+    public void testInvalidJoinColorAlreadyTaken() throws DataAccessException, ResponseException {
         LoginRequest request1 = new LoginRequest("Steve", "urmom");
         LoginResult actual1 = userService.login(request1);
         CreateRequest request2 = new CreateRequest("THe WINNERS", actual1.authToken());
