@@ -83,7 +83,8 @@ public class RegisterDatabaseTests {
         userDAO.createUser(userData);
 
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, password, email FROM UserData WHERE username=?")) {
             ps.setString(1, "john");
             try (ResultSet rs = ps.executeQuery()) {
                 Assertions.assertTrue(rs.next(), "User should exist in the database");
@@ -109,7 +110,8 @@ public class RegisterDatabaseTests {
         UserData newData = userDAO.getUserData("sue");
 
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, password, email FROM UserData WHERE username=?")) {
             ps.setString(1, "sue");
             try (ResultSet rs = ps.executeQuery()) {
                 Assertions.assertTrue(rs.next(), "User should exist in the database");
@@ -138,7 +140,8 @@ public class RegisterDatabaseTests {
         }
 
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, password, email FROM UserData WHERE username=?")) {
             ps.setString(1, "sue");
             try (ResultSet rs = ps.executeQuery()) {
                 Assertions.assertFalse(rs.next(), "User should be removed from database after TRUNCATE");
