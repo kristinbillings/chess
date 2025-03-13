@@ -64,7 +64,7 @@ public class Server {
 
     private void exceptionHandler(Exception ex, Request req, Response res) {
         res.status(500);
-        res.body(STR."{\"message\": \"Error:\{ex.getMessage()}\"} ");
+        res.body("{\"message\": \"Error: " + ex.getMessage() + "\"}");
     }
 
     public void stop() {
