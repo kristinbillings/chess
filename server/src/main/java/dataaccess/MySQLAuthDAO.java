@@ -34,7 +34,7 @@ public class MySQLAuthDAO implements AuthDAO {
     @Override
     public AuthData getUserAuthData(String authToken) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT username FROM authData WHERE authToken=?";
+            var statement = "SELECT username FROM AuthData WHERE authToken=?";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, authToken);
                 try (var rs = ps.executeQuery()) {
@@ -51,7 +51,7 @@ public class MySQLAuthDAO implements AuthDAO {
 
     @Override
     public void deleteAuth(AuthData authData) throws ResponseException{
-        var statement = "DELETE FROM authData WHERE authToken=?";
+        var statement = "DELETE FROM AuthData WHERE authToken=?";
         executeUpdate(statement, authData.authToken());
     }
 
