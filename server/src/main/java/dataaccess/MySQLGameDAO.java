@@ -15,10 +15,7 @@ import static java.sql.Types.NULL;
 
 public class MySQLGameDAO implements GameDAO {
     // create storage for all the data
-    private int numGames;
-
     public MySQLGameDAO() {
-        this.numGames = 1;
         try {
             DatabaseManager.createDatabase();
             ConfigureDatabase.configureDatabase(createStatements);
@@ -27,7 +24,6 @@ public class MySQLGameDAO implements GameDAO {
             throw new RuntimeException("Database configuration failed", e);  // You can customize this if you need to propagate it
         }
     }
-
 
     @Override
     public int createGame(GameData gameData) throws ResponseException{
