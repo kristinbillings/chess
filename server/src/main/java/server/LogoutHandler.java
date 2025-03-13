@@ -30,10 +30,10 @@ public class LogoutHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("500", "Error: no authToken");
                 return new Gson().toJson(errorResponse);
             }
-            LogoutResult response = userService.logout(request);
-            //res.status(200);
+            LogoutResult result = userService.logout(request);
+            res.status(200);
             //ErrorStatusMessage finalResponse = new ErrorStatusMessage("200", "OK");
-            return new Gson().toJson(response);
+            return new Gson().toJson(result);
         }
         catch(DataAccessException e) {
             ErrorMessages errorMessage = new ErrorMessages();

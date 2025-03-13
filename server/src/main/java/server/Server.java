@@ -30,8 +30,6 @@ public class Server {
         this.gameService = new GameService(authDAO, gameDAO);
 
 
-
-
         RegisterHandler registerHandler = new RegisterHandler(userService);
         LoginHandler loginHandler = new LoginHandler(userService);
         LogoutHandler logoutHandler = new LogoutHandler(userService);

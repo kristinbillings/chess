@@ -51,8 +51,8 @@ public class MySQLAuthDAO implements AuthDAO {
 
     @Override
     public void deleteAuth(AuthData authData) throws ResponseException{
-        var statement = "DELETE FROM authData WHERE userName=?";
-        executeUpdate(statement, authData.username());
+        var statement = "DELETE FROM authData WHERE authToken=?";
+        executeUpdate(statement, authData.authToken());
     }
 
     private int executeUpdate(String statement, Object... params) throws ResponseException {
