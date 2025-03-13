@@ -31,9 +31,9 @@ public class LogoutHandler implements Route {
                 return new Gson().toJson(errorResponse);
             }
             LogoutResult response = userService.logout(request);
-            res.status(200);
-            ErrorStatusMessage finalResponse = new ErrorStatusMessage("200", "OK");
-            return new Gson().toJson(finalResponse);
+            //res.status(200);
+            //ErrorStatusMessage finalResponse = new ErrorStatusMessage("200", "OK");
+            return new Gson().toJson(response);
         }
         catch(DataAccessException e) {
             ErrorMessages errorMessage = new ErrorMessages();

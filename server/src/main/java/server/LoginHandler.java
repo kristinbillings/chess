@@ -30,7 +30,7 @@ public class LoginHandler implements Route {
                 return new Gson().toJson(errorResponse);
             }
             LoginResult response = userService.login(request);
-            res.status(200);
+            //res.status(200);
             return new Gson().toJson(response);
         }
         catch(DataAccessException e) {

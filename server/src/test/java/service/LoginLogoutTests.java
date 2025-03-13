@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,12 @@ public class LoginLogoutTests {
     public void createUser() throws DataAccessException,ResponseException  {
         RegisterRequest request = new RegisterRequest("Steve","urmom","hottie@gmail.com");
         RegisterResult register = userService.register(request);
+    }
+
+    @BeforeEach @AfterEach
+    public void clearDatabase() throws DataAccessException, ResponseException {
+        authDAO.clear();
+        userDAO.clear();
     }
 
     //LOGIN TESTS
