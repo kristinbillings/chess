@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import java.sql.*;
+import org.mindrot.jbcrypt.BCrypt;
+
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
@@ -128,6 +130,45 @@ public class RegisterDatabaseTests {
             UserData newData = userDAO.getUserData(null);
         });
     }
+
+    @Test
+    public void testCheckPassword() throws ResponseException, SQLException {
+        UserData userData = new UserData("sue", "ps",".gm");
+        userDAO.createUser(userData);
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, password, email FROM UserData WHERE username=?")) {
+            ps.setString(1, "sue");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Step 3: Check if the plain password matches the hashed password
+                    Assertions.assertTrue(BCrypt.checkpw("ps", rs.getString("password")),
+                            "Password should match the hashed password in the database");
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testNegCheckPassword() throws ResponseException, SQLException {
+        UserData userData = new UserData("sue", "ps",".gm");
+        userDAO.createUser(userData);
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, password, email FROM UserData WHERE username=?")) {
+            ps.setString(1, "sue");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Step 3: Check if the plain password matches the hashed password
+                    Assertions.assertFalse(BCrypt.checkpw("ls", rs.getString("password")),
+                            "Password should match the hashed password in the database");
+                }
+            }
+        }
+    }
+
 
     @Test
     public void testClearUser() throws ResponseException, SQLException {
