@@ -141,7 +141,7 @@ public class RegisterDatabaseTests {
              PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
             ps.setString(1, "sue");
             try (ResultSet rs = ps.executeQuery()) {
-                Assertions.assertFalse(rs.next(), "User should be removed from the database after TRUNCATE");
+                Assertions.assertFalse(rs.next(), "User should be removed from database after TRUNCATE");
             }
         }
     }
