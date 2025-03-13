@@ -3,24 +3,14 @@ package ui;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import static ui.EscapeSequences.*;
+import ui.ChessBoard;
 
 public class Client {
     //draws menu and selects input
-    //then calls method in chessboard
-    private static void drawChessBoard(PrintStream out) {
-        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-
-        out.print(ERASE_SCREEN);
-    }
-    private static void drawHeader(PrintStream out) {
-
+    //then calls methods in chessboard
+    //ima just use the letters as the characters(this is less work)
+    private static void drawChessBoard() {
+        ChessBoard.drawChessBoard("WHITE"); //change this later to be a variable passed in
     }
 
-    private static void drawRowOfSquares(PrintStream out) {
-
-    }
-
-    private static void drawVerticalLine(PrintStream out) {
-
-    }
 }
