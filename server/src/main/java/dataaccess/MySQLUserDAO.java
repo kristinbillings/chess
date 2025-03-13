@@ -22,6 +22,9 @@ public class MySQLUserDAO implements UserDAO{
 
     @Override
     public UserData getUserData(String username) throws ResponseException {
+        if (username ==null) {
+            throw new ResponseException(500, String.format("username null"));
+        }
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "SELECT username, password, email FROM UserData WHERE username=?";
             try (var ps = conn.prepareStatement(statement)) {

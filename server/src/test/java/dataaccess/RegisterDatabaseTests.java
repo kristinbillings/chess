@@ -6,9 +6,18 @@ import model.UserData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import java.sql.*;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;
+
+
+
 import service.UserService;
 
 public class RegisterDatabaseTests {
+    private MySQLUserDAO userDAO = new MySQLUserDAO();
+
     private final String[] createStatement1 = {
             """
             CREATE TABLE IF NOT EXISTS  GameData (
@@ -45,6 +54,8 @@ public class RegisterDatabaseTests {
 
     @BeforeEach
     public void setUp(){
+        this.userDAO = new MySQLUserDAO();
+
         try {
             DatabaseManager.createDatabase();
             ConfigureDatabase.configureDatabase(createStatement1);
@@ -67,12 +78,72 @@ public class RegisterDatabaseTests {
     }
 
     @Test
-    public void testCreateAuth() throws ResponseException {
+    public void testCreateUser() throws ResponseException, SQLException {
         UserData userData = new UserData("john", "password",".com");
-        MySQLUserDAO.createUser(userData)
+        userDAO.createUser(userData);
 
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
+            ps.setString(1, "john");
+            try (ResultSet rs = ps.executeQuery()) {
+                Assertions.assertTrue(rs.next(), "User should exist in the database");
+                Assertions.assertEquals("john", rs.getString("username"));
+                Assertions.assertEquals(".com", rs.getString("email"));
+            }
+        }
     }
 
+    @Test
+    public void testNegCreateUser() throws ResponseException, SQLException {
+        UserData userData = new UserData(null, "password",".com");
+        Assertions.assertThrows(ResponseException.class, () -> {
+            userDAO.createUser(userData);
+        });
+    }
 
+    @Test
+    public void testGetUser() throws ResponseException, SQLException {
+        UserData userData = new UserData("sue", "ps",".gm");
+        userDAO.createUser(userData);
+
+        UserData newData = userDAO.getUserData("sue");
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
+            ps.setString(1, "sue");
+            try (ResultSet rs = ps.executeQuery()) {
+                Assertions.assertTrue(rs.next(), "User should exist in the database");
+                Assertions.assertEquals("sue", rs.getString("username"));
+                Assertions.assertEquals(".gm", rs.getString("email"));
+            }
+        }
+    }
+
+    @Test
+    public void testNegGetUser() throws ResponseException, SQLException {
+        UserData userData = new UserData("sue", "password",".com");
+        Assertions.assertThrows(ResponseException.class, () -> {
+            UserData newData = userDAO.getUserData(null);
+        });
+    }
+
+    @Test
+    public void testClearUser() throws ResponseException, SQLException {
+        UserData userData = new UserData("sue", "ps",".gm");
+        userDAO.createUser(userData);
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement("TRUNCATE UserData")) {
+             ps.executeUpdate();
+        }
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT username, password, email FROM UserData WHERE username=?")) {
+            ps.setString(1, "sue");
+            try (ResultSet rs = ps.executeQuery()) {
+                Assertions.assertFalse(rs.next(), "User should be removed from the database after TRUNCATE");
+            }
+        }
+    }
 
 }
