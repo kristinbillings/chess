@@ -15,11 +15,6 @@ public class UserService {
     private MySQLUserDAO userDAO;
     private MySQLAuthDAO authDAO;
 
-    /*public UserService(MemoryAuthDAO authDAO, MySQLAuthDAO userDAO) {
-        this.userDAO = userDAO;
-        this.authDAO = authDAO;
-    } */
-
     public UserService(MySQLAuthDAO authDAO, MySQLUserDAO userDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;

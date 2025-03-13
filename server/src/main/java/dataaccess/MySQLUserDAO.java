@@ -40,11 +40,6 @@ public class MySQLUserDAO implements UserDAO{
 
     @Override
     public void createUser(UserData userData) throws ResponseException {
-        /*if (userData.password() == null |
-            userData.username() == null |
-            userData.email() == null) {
-            throw new ResponseException(400, "Error: bad request");
-        }*/
         var statement = "INSERT INTO UserData (username, password, email) VALUES (?, ?, ?)";
         var secretPassword = hashPassword(userData.password());
         var id = executeUpdate(statement, userData.username(), secretPassword,userData.email());
@@ -61,10 +56,15 @@ public class MySQLUserDAO implements UserDAO{
             try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < params.length; i++) {
                     var param = params[i];
-                    if (param instanceof String p) ps.setString(i + 1, p);
-                    //else if (param instanceof Integer p) ps.setInt(i + 1, p);
-                    else if (param instanceof UserData p) ps.setString(i + 1, p.toString());
-                    else if (param == null) ps.setNull(i + 1, NULL);
+                    if (param instanceof String p) {
+                        ps.setString(i + 1, p);
+                    }
+                    else if (param instanceof UserData p) {
+                        ps.setString(i + 1, p.toString());
+                    }
+                    else if (param == null) {
+                        ps.setNull(i + 1, NULL);
+                    }
                 }
                 ps.executeUpdate();
 
