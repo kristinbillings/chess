@@ -21,7 +21,7 @@ public class MySQLGameDAO implements GameDAO {
         this.numGames = 1;
         try {
             DatabaseManager.createDatabase();
-            configureDatabase();
+            ConfigureDatabase.configureDatabase(createStatements);
         } catch (ResponseException e) {
             System.err.println("Error configuring the database: " + e.getMessage());
             throw new RuntimeException("Database configuration failed", e);  // You can customize this if you need to propagate it
@@ -170,16 +170,4 @@ public class MySQLGameDAO implements GameDAO {
             """
     };
 
-    private void configureDatabase() {
-        //DatabaseManager.createDatabase();
-        try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException | ResponseException ex) {
-            throw new RuntimeException("Unable to configure database: %s");
-        }
-    }
 }

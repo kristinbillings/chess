@@ -13,7 +13,7 @@ public class MySQLAuthDAO implements AuthDAO {
     public MySQLAuthDAO() {
         try {
             DatabaseManager.createDatabase();
-            configureDatabase();
+            ConfigureDatabase.configureDatabase(createStatements);
         } catch (ResponseException e) {
             System.err.println("Error configuring the database: " + e.getMessage());
             throw new RuntimeException("Database configuration failed", e);  // You can customize this if you need to propagate it
@@ -90,17 +90,4 @@ public class MySQLAuthDAO implements AuthDAO {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """
     };
-
-    private void configureDatabase() {
-        //DatabaseManager.createDatabase();
-        try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException | ResponseException ex) {
-            throw new RuntimeException("Unable to configure database: %s");
-        }
-    }
 }
