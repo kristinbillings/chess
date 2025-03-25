@@ -17,6 +17,7 @@ public class Client {
     private final String serverUrl;
     private State state = State.SIGNEDOUT;
     private Prelogin preloginState;
+    private String authToken;
 
     public Client(String serverUrl) {
         ServerFacade server = new ServerFacade(serverUrl);
@@ -26,7 +27,7 @@ public class Client {
     }
 
     public void run() {
-        System.out.print("Welcome to chess!");
+        System.out.print(PreloginMenu());
         Scanner scanner = new Scanner(System.in);
         String userInput = scanner.nextLine();
 
@@ -51,10 +52,12 @@ public class Client {
         return """
                 Welcome to chess!
                                 
-                - login         login to play
-                - register      register to begin playing
-                - quit          exits chess program
-                - help          lists options
+                - login <USERNAME> <PASSWORD>  --  login to play
+                - register <USERNAME> <PASSWORD> <EMAIL>  --  register to begin playing
+                - quit  --  exits chess program
+                - help  --  lists options
+                
+                Choose one:
                 """;
     }
 
