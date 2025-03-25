@@ -2,6 +2,7 @@ package ui;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
@@ -37,7 +38,11 @@ public class Client {
             System.out.print(result);
         } else if (state == State.SIGNEDIN) {
             String result = postloginState.evaluate(userInput, preloginState.getAuth());
+            if (Objects.equals(result, "quit")) {
+
+            }
             System.out.print(result);
+
         }
 
 
@@ -71,7 +76,7 @@ public class Client {
                             
                 - create <NAME>  --  create a new game
                 - list  --  list of all the games currently open
-                - join <ID> [WHITE|BLACK]  --  join a game and play
+                - join  --  join a game and play
                 - observe  <ID>  --  watch a game
                 - logout  --  logout of chess
                 - help  --  lists options

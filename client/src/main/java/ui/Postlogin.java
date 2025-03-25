@@ -28,8 +28,8 @@ public class Postlogin {
                 case "create" -> create(authToken,params);
                 case "list" -> list(authToken, params);
                 case "join" -> join(authToken, params);
-                case "observe" -> observe();
-                case "logout" -> logout();
+                case "observe" -> observe(params);
+                case "logout" -> logout(authToken,params);
                 case "quit" -> "quit";
                 default -> help(cmd);
             };
@@ -55,6 +55,7 @@ public class Postlogin {
             ListResult result = serverFacade.list(request);
 
             String output = "Current Games: \n\n";
+            currentGames.clear(); //resets so number are consistent
 
             for (int i = 0; i < result.games().size(); i++) {
                 GameResult game = result.games().get(i);
@@ -72,31 +73,74 @@ public class Postlogin {
 
     private String join(String authToken,String... params) throws ResponseException {
         if (params.length == 2) {
-            var gameNumber = params[0];
+            var gameNumber = Integer.parseInt(params[0]);
             var color = params[1];
 
             if (!Objects.equals(color, "WHITE") && !Objects.equals(color, "BLACK")) {
                 throw new ResponseException(400, "Expected: [WHITE|BLACK]");
             }
+            if (gameNumber > currentGames.size()) {
+                throw new ResponseException(400, "Expected: valid <ID>");
+            }
 
+            int gameID = currentGames.get(gameNumber-1).gameID();
 
-
-            JoinRequest request = new JoinRequest(authToken,color,);
+            JoinRequest request = new JoinRequest(authToken,color,gameID);
             JoinResult result = serverFacade.join(request);
 
-            return ("Successfully created a game called: " + gameName);
+            String gameName = currentGames.get(gameNumber-1).gameName();
+
+
+
+            return ("Successfully joined " + gameName);
         }
-        throw new ResponseException(400, "Expected: <NAME>");
+        throw new ResponseException(400, "Expected: <ID> [WHITE|BLACK]");
     }
 
     private String observe(String... params) throws ResponseException {
-        return null;
+        if (params.length == 1) {
+            var gameNumber = Integer.parseInt(params[0]);
+
+            if (gameNumber > currentGames.size()) {
+                throw new ResponseException(400, "Expected: valid <ID>");
+            }
+
+            int gameID = currentGames.get(gameNumber-1).gameID();
+
+            String gameName = currentGames.get(gameNumber-1).gameName();
+
+            return ("Successfully observing " + gameNumber + " " + gameName);
+        }
+        throw new ResponseException(400, "Expected: <ID> ");
     }
-    private String logout(String... params) throws ResponseException {
-        return null;
+
+    private String logout(String authToken, String... params) throws ResponseException {
+        if (params.length == 0) {
+            LogoutRequest request = new LogoutRequest(authToken);
+            LogoutResult result = serverFacade.logout(request);
+
+            return ("Successfully logged out.");
+        }
+        throw new ResponseException(400, "Expected: nothing after \"logout\"");
     }
+
     private String help(String cmd) throws ResponseException {
-        return null;
+        String firstLine = "Menu:";
+        if (cmd != "help") {
+            firstLine = "\"" + cmd + "\" is an invalid option, try again: ";
+        }
+
+        return (firstLine +
+                """
+                 
+                - create <NAME>  --  create a new game
+                - list  --  list of all the games currently open
+                - join  --  join a game and play
+                - observe  <ID>  --  watch a game
+                - logout  --  logout of chess
+                - help  --  lists options
+                - quit  --  quit playing chess
+                 """);
     }
 }
 
