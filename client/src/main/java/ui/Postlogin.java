@@ -1,6 +1,5 @@
 package ui;
 
-import chess.ChessPiece;
 import dataaccess.ResponseException;
 import net.ServerFacade;
 import requests.*;
@@ -132,7 +131,7 @@ public class Postlogin {
 
     private String help(String cmd) throws ResponseException {
         String firstLine = "Menu:";
-        if (cmd != "help") {
+        if (cmd == "help\n") {
             firstLine = "\"" + cmd + "\" is an invalid option, try again: ";
         }
 

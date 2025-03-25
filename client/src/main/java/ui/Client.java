@@ -13,8 +13,7 @@ import chess.ChessPiece;
 
 
 public class Client {
-    //draws menu and selects input*****
-    //then calls methods in chessboard
+    //gets input and then goes to pre- or post-login class
     private final String serverUrl;
     private State state = State.SIGNEDOUT;
     private Prelogin preloginState;
@@ -31,22 +30,26 @@ public class Client {
     public void run() {
         System.out.print(PreloginMenu());
         Scanner scanner = new Scanner(System.in);
-        String userInput = scanner.nextLine();
 
-        if (state == State.SIGNEDOUT) {
-            String result = preloginState.evaluate(userInput);
-            System.out.print(result);
-        } else if (state == State.SIGNEDIN) {
-            String result = postloginState.evaluate(userInput, preloginState.getAuth());
-            if (Objects.equals(result, "quit")) {
-
+        var result = "";
+        while (!result.equals("quit")) {
+            String userInput = scanner.nextLine();
+            if (state == State.SIGNEDOUT) {
+                result = preloginState.evaluate(userInput);
+                System.out.print(result);
+                if (result.contains("uccessful")) {
+                    state = State.SIGNEDIN;
+                    postloginState = new Postlogin(serverUrl);
+                }
+            } else if (state == State.SIGNEDIN) {
+                result = postloginState.evaluate(userInput, preloginState.getAuth());
+                if (result.contains("Successfully logged out.")) {
+                    state = State.SIGNEDOUT;
+                }
+                System.out.print(result);
             }
-            System.out.print(result);
-
         }
 
-
-        //Scanner scanner = scanner(in)
     }
 
 

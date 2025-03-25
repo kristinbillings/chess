@@ -70,7 +70,7 @@ public class Prelogin {
 
     private String help(String cmd) throws ResponseException {
         String firstLine = "Menu:";
-        if (cmd != "help") {
+        if (cmd == "help\n") {
             firstLine = "\"" + cmd + "\" is an invalid option, try again: ";
         }
 
