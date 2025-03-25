@@ -62,7 +62,12 @@ public class Prelogin {
     }
 
     private String help(String cmd) throws ResponseException {
-        return ("\"" + cmd + "\" is an invalid option, try again: " +
+        String firstLine = "Menu:";
+        if (cmd != "help") {
+            firstLine = "\"" + cmd + "\" is an invalid option, try again: ";
+        }
+
+        return (firstLine +
                 """
                                 
                 - login <USERNAME> <PASSWORD>  --  login to play

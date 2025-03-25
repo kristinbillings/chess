@@ -17,6 +17,7 @@ public class Client {
     private final String serverUrl;
     private State state = State.SIGNEDOUT;
     private Prelogin preloginState;
+    private Postlogin postloginState;
     private String authToken;
 
     public Client(String serverUrl) {
@@ -33,6 +34,9 @@ public class Client {
 
         if (state == State.SIGNEDOUT) {
             String result = preloginState.evaluate(userInput);
+            System.out.print(result);
+        } else if (state == State.SIGNEDIN) {
+            String result = postloginState.evaluate(userInput);
             System.out.print(result);
         }
 
@@ -65,12 +69,13 @@ public class Client {
         return """
                 What would you like to do?
                             
-                - create        create a new game
-                - list          list of all the games currently open
-                - play          join a game and play
-                - observe       watch a game
-                - logout        logout of chess
-                - help          lists options
+                - create <NAME>  --  create a new game
+                - list  --  list of all the games currently open
+                - join <ID> [WHITE|BLACK]  --  join a game and play
+                - observe  <ID>  --  watch a game
+                - logout  --  logout of chess
+                - help  --  lists options
+                - quit  --  quit playing chess
                 """;
     }
 
