@@ -40,11 +40,15 @@ public class Client {
                 if (result.contains("uccessful")) {
                     state = State.SIGNEDIN;
                     postloginState = new Postlogin(serverUrl);
+                    System.out.print(PostloginMenu());
+
                 }
             } else if (state == State.SIGNEDIN) {
                 result = postloginState.evaluate(userInput, preloginState.getAuth());
                 if (result.contains("Successfully logged out.")) {
                     state = State.SIGNEDOUT;
+                    System.out.print(PreloginMenu());
+
                 }
                 System.out.print(result);
             }

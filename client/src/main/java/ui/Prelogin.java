@@ -48,7 +48,7 @@ public class Prelogin {
             LoginResult result = serverFacade.login(request);
             authToken = result.authToken();
 
-            return "Successful login!";
+            return "Successful login!\n";
         }
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD>");
     }
@@ -63,13 +63,13 @@ public class Prelogin {
             RegisterResult result = serverFacade.register(request);
             authToken = result.authToken();
 
-            return "User successfully registered!";
+            return "User successfully registered!\n";
         }
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>");
     }
 
     private String help(String cmd) throws ResponseException {
-        String firstLine = "Menu:";
+        String firstLine = "\nMenu:";
         if (cmd == "help\n") {
             firstLine = "\"" + cmd + "\" is an invalid option, try again: ";
         }

@@ -130,7 +130,7 @@ public class Postlogin {
     }
 
     private String help(String cmd) throws ResponseException {
-        String firstLine = "Menu:";
+        String firstLine = "\nMenu:";
         if (cmd == "help\n") {
             firstLine = "\"" + cmd + "\" is an invalid option, try again: ";
         }
