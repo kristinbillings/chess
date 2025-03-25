@@ -2,6 +2,8 @@ package ui;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
 import static ui.EscapeSequences.*;
 
 import ui.ChessBoard;
@@ -14,12 +16,28 @@ public class Client {
     //then calls methods in chessboard
     private final String serverUrl;
     private State state = State.SIGNEDOUT;
+    private Prelogin preloginState;
 
     public Client(String serverUrl) {
         ServerFacade server = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
+        this.preloginState = new Prelogin(serverUrl);
+
     }
 
+    public void run() {
+        System.out.print("Welcome to chess!");
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+
+        if (state == State.SIGNEDOUT) {
+            String result = preloginState.evaluate(userInput);
+            System.out.print(result);
+        }
+
+
+        //Scanner scanner = scanner(in)
+    }
 
 
 
