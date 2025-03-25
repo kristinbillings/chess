@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessPiece;
 import dataaccess.ResponseException;
 import net.ServerFacade;
 import requests.*;
@@ -90,7 +91,8 @@ public class Postlogin {
 
             String gameName = currentGames.get(gameNumber-1).gameName();
 
-
+            //does not pass in the board now, but this is easily changed for later
+            ChessBoard.drawChessBoard(color);
 
             return ("Successfully joined " + gameName);
         }
@@ -108,6 +110,9 @@ public class Postlogin {
             int gameID = currentGames.get(gameNumber-1).gameID();
 
             String gameName = currentGames.get(gameNumber-1).gameName();
+
+            //does not pass in the board now, but this is easily changed for later
+            ChessBoard.drawChessBoard("WHITE");
 
             return ("Successfully observing " + gameNumber + " " + gameName);
         }
