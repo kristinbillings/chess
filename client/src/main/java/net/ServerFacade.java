@@ -31,9 +31,9 @@ public class ServerFacade {
         return comms.makeRequest("DELETE", path, request, LogoutResult.class,serverUrl);
     }
 
-    public GameResult list(LogoutRequest request) throws ResponseException {
+    public ListResult list(ListRequest request) throws ResponseException {
         var path = "/game";
-        return comms.makeRequest("GET", path, request, GameResult.class,serverUrl);
+        return comms.makeRequest("GET", path, request, ListResult.class,serverUrl);
     }
 
     public JoinResult join(JoinRequest request) throws ResponseException {

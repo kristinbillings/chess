@@ -1,6 +1,7 @@
 package ui;
 
 import dataaccess.ResponseException;
+import model.AuthData;
 import net.ServerFacade;
 import requests.LoginRequest;
 import requests.RegisterRequest;
@@ -12,10 +13,15 @@ import java.util.Arrays;
 public class Prelogin {
     private final String serverUrl;
     private ServerFacade serverFacade;
+    private String authToken;
 
     public Prelogin(String serverUrl) {
         this.serverUrl = serverUrl;
         this.serverFacade = new ServerFacade(serverUrl);
+    }
+
+    public String getAuth() {
+        return authToken;
     }
 
     public String evaluate(String input) {
@@ -40,6 +46,7 @@ public class Prelogin {
             var password = params[1];
             LoginRequest request = new LoginRequest(username, password);
             LoginResult result = serverFacade.login(request);
+            authToken = result.authToken();
 
             return "Successful login!";
         }
@@ -54,6 +61,7 @@ public class Prelogin {
 
             RegisterRequest request = new RegisterRequest(username, password, email);
             RegisterResult result = serverFacade.register(request);
+            authToken = result.authToken();
 
             return "User successfully registered!";
         }

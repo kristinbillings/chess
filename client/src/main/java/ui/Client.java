@@ -36,7 +36,7 @@ public class Client {
             String result = preloginState.evaluate(userInput);
             System.out.print(result);
         } else if (state == State.SIGNEDIN) {
-            String result = postloginState.evaluate(userInput);
+            String result = postloginState.evaluate(userInput, preloginState.getAuth());
             System.out.print(result);
         }
 
