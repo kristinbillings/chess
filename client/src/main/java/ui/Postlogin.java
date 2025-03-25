@@ -6,6 +6,7 @@ import net.ServerFacade;
 import requests.*;
 import results.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class Postlogin {
     private final String serverUrl;
     private ServerFacade serverFacade;
-    private List<GameResult> currentGames;
+    private List<GameResult> currentGames = new ArrayList<>();
 
     public Postlogin(String serverUrl) {
         this.serverUrl = serverUrl;
