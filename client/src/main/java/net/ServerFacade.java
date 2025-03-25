@@ -12,6 +12,10 @@ public class ServerFacade {
     //use petshop and include issucces, readbody, throw, write , makerequest
     private String serverUrl;
 
+    public ServerFacade (String serverUrl) {
+        this.serverUrl = serverUrl;
+    }
+
     public RegisterResult register(RegisterRequest request) {
 
         return null;

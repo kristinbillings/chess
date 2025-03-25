@@ -181,7 +181,6 @@ public class ChessBoard {
         addPiece(new ChessPosition(7,8),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
 
     }
-
     //for checking my code while writing it
     void main() {
         resetBoard();
