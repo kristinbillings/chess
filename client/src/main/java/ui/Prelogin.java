@@ -26,7 +26,6 @@ public class Prelogin {
             return switch (cmd) {
                 case "login" -> login(params);
                 case "register" -> register(params);
-                case "help" -> help(cmd);
                 case "quit" -> "quit";
                 default -> help(cmd);
             };

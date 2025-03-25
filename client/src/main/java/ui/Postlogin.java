@@ -25,11 +25,10 @@ public class Postlogin {
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (cmd) {
                 case "create" -> create(params);
-                case "list" -> register(params);
-                case "join" -> register(params);
-                case "observe" -> register(params);
-                case "logout" -> register(params);
-                case "help" -> help(cmd);
+                case "list" -> list(params);
+                case "join" -> join(params);
+                case "observe" -> observe();
+                case "logout" -> logout();
                 case "quit" -> "quit";
                 default -> help(cmd);
             };
@@ -48,4 +47,23 @@ public class Postlogin {
         }
         throw new ResponseException(400, "Expected: <NAME>");
     }
+
+
+    private String list(String... params) throws ResponseException {
+        return null;
+    }
+
+    private String join(String... params) throws ResponseException {
+        return null;
+    }
+    private String observe(String... params) throws ResponseException {
+        return null;
+    }
+    private String logout(String... params) throws ResponseException {
+        return null;
+    }
+    private String help(String cmd) throws ResponseException {
+        return null;
+    }
 }
+
