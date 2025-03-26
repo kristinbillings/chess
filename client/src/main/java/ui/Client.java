@@ -84,7 +84,7 @@ public class Client {
                 - create <NAME>  --  create a new game
                 - list  --  list of all the games currently open
                 - join  --  join a game and play
-                - observe  <ID>  --  watch a game
+                - observe <ID>  --  watch a game
                 - logout  --  logout of chess
                 - help  --  lists options
                 - quit  --  quit playing chess

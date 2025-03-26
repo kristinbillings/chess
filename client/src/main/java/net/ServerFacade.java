@@ -8,7 +8,7 @@ public class ServerFacade {
     //this contains login register this will have 7 methods
     //this will have code that calls client communicator
     //use petshop and include issucces, readbody, throw, write , makerequest
-    private String serverUrl;
+    private final String serverUrl;
     private ClientCommunicator comms;
 
     public ServerFacade (String serverUrl) {
