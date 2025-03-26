@@ -128,6 +128,8 @@ public class Postlogin {
 
             //does not pass in the board now, but this is easily changed for later
 
+            System.out.print("\nYou can leave the game by typing \"quit\"\n");
+
             ChessBoard.drawChessBoard(color);
 
             return ("Successfully joined " + gameName);
@@ -147,6 +149,7 @@ public class Postlogin {
 
             String gameName = currentGames.get(gameNumber-1).gameName();
 
+            System.out.print("\nYou can leave the game by typing \"quit\"\n");
             //does not pass in the board now, but this is easily changed for later
             ChessBoard.drawChessBoard("WHITE");
 
