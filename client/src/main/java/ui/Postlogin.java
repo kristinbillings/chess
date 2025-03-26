@@ -127,6 +127,7 @@ public class Postlogin {
             String gameName = currentGames.get(gameNumber-1).gameName();
 
             //does not pass in the board now, but this is easily changed for later
+
             ChessBoard.drawChessBoard(color);
 
             return ("Successfully joined " + gameName);
