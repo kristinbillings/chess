@@ -12,12 +12,16 @@ import dataaccess.ResponseException;
 
 public class ClientCommunicator {
     //get and post code goes here
-    public <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String serverUrl) throws ResponseException {
+    public <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String serverUrl,String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
+
+            if (authToken != null && !authToken.isEmpty()) {
+                http.setRequestProperty("Authorization", authToken);
+            }
 
             writeBody(request, http);
             http.connect();
