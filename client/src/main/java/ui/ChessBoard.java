@@ -187,7 +187,6 @@ public class ChessBoard {
 
 
     //for right now, remove later
-
     //for checking my code while writing it
     void main() {
         resetBoard();

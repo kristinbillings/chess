@@ -48,7 +48,6 @@ public class Client {
                 if (result.contains("Successfully logged out.")) {
                     state = State.SIGNEDOUT;
                     result += "\n\n" + PreloginMenu();
-
                 }
                 System.out.print(result);
             }

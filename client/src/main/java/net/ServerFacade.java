@@ -45,8 +45,8 @@ public class ServerFacade {
         return comms.makeRequest("POST", path, request, CreateResult.class,serverUrl,request.authToken());
     }
 
-    public void clear(CreateRequest request) throws ResponseException {
+    public void clear() throws ResponseException {
         var path = "/db";
-        comms.makeRequest("DELETE", path, request, CreateResult.class,serverUrl,null); //probably doesnt return create
+        comms.makeRequest("DELETE", path, null, null,serverUrl,null); //probably doesnt return create
     }
 }
