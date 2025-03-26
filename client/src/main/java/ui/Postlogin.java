@@ -59,7 +59,7 @@ public class Postlogin {
             ListRequest request = new ListRequest(authToken);
             ListResult result = serverFacade.list(request);
 
-            String output = "Current Games: \n\n";
+            String output = "\nCurrent Games: \n";
             currentGames.clear(); //resets so number are consistent
 
             for (int i = 0; i < result.games().size(); i++) {
@@ -87,6 +87,7 @@ public class Postlogin {
                         + ", Black: " + blackPlayer
                         + "\n";
             }
+            output += "---------------------------------------------------\n";
             return output;
         }
         throw new ResponseException(400, "Expected: nothing after \"list\"");
@@ -94,8 +95,13 @@ public class Postlogin {
 
     private String join(String... params) throws ResponseException {
         if (params.length == 2) {
-            var gameNumber = Integer.parseInt(params[0]);
             var color = params[1];
+            int gameNumber = 0;
+            try {
+                gameNumber = Integer.parseInt(params[0]);
+            } catch (NumberFormatException e) {
+                throw new ResponseException(400, "Expected: a valid integer");
+            }
 
             if (!Objects.equals(color, "white")) {
                 if (!Objects.equals(color, "black")) {
