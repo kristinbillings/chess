@@ -22,8 +22,10 @@ public class ClientCommunicator {
             if (authToken != null && !authToken.isEmpty()) {
                 http.setRequestProperty("Authorization", authToken);
             }
+            if(request != null) {
+                writeBody(request, http);
+            }
 
-            writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
             return readBody(http, responseClass);

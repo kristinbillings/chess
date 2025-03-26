@@ -32,7 +32,7 @@ public class ServerFacade {
 
     public ListResult list(ListRequest request) throws ResponseException {
         var path = "/game";
-        return comms.makeRequest("GET", path, request, ListResult.class,serverUrl,request.authToken());
+        return comms.makeRequest("GET", path, null, ListResult.class,serverUrl,request.authToken());
     }
 
     public JoinResult join(JoinRequest request) throws ResponseException {

@@ -56,9 +56,6 @@ public class Client {
 
     }
 
-
-
-
     private static void drawChessBoard() {
         //takes in the board (will be the one that comes from the game
         ChessBoard.drawChessBoard("WHITE"); //change this later to be a variable passed in

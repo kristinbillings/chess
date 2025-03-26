@@ -66,10 +66,25 @@ public class Postlogin {
                 GameResult game = result.games().get(i);
                 currentGames.add(game);
                 String num = Integer.toString(i+1);
+
+                String whitePlayer = "";
+                if (game.whiteUsername() == null){
+                    whitePlayer = "<player space available>";
+                } else {
+                    whitePlayer = game.whiteUsername();
+                }
+
+                String blackPlayer = "";
+                if (game.blackUsername() == null){
+                    blackPlayer = "<player space available>";
+                } else {
+                    blackPlayer = game.blackUsername();
+                }
+
                 output += num///changed here
                         + "\t" + game.gameName()
-                        + ", White: " + game.whiteUsername()
-                        + ", Black: " + game.blackUsername()
+                        + ", White: " + whitePlayer
+                        + ", Black: " + blackPlayer
                         + "\n";
             }
             return output;
