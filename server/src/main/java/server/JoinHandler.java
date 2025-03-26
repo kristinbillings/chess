@@ -35,7 +35,7 @@ public class JoinHandler implements Route {
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);
             }
-            if(!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK")) {
+            if(!request.playerColor().equalsIgnoreCase("WHITE") && !request.playerColor().equalsIgnoreCase("BLACK")) {
                 res.status(400);
                 ErrorStatusMessage errorResponse = new ErrorStatusMessage("400", "Error: bad request");
                 return new Gson().toJson(errorResponse);

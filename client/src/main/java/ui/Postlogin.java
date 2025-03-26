@@ -108,7 +108,14 @@ public class Postlogin {
                     throw new ResponseException(400, "Expected: [WHITE|BLACK]\n");
                 }
             }
-            if (gameNumber > currentGames.size()) {
+
+            if (Objects.equals(color, "white")) {
+                color = "WHITE";
+            } else if (Objects.equals(color, "black")) {
+                color = "BLACK";
+            }
+
+            if (gameNumber > currentGames.size()+1) {
                 throw new ResponseException(400, "Expected: valid <ID>\n");
             }
 
