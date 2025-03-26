@@ -27,7 +27,7 @@ public class ServerFacade {
 
     public LogoutResult logout(LogoutRequest request) throws ResponseException {
         var path = "/session";
-        return comms.makeRequest("DELETE", path, request, LogoutResult.class,serverUrl,request.authToken());
+        return comms.makeRequest("DELETE", path, null, LogoutResult.class,serverUrl,request.authToken());
     }
 
     public ListResult list(ListRequest request) throws ResponseException {

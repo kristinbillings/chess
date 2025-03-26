@@ -100,16 +100,16 @@ public class Postlogin {
             try {
                 gameNumber = Integer.parseInt(params[0]);
             } catch (NumberFormatException e) {
-                throw new ResponseException(400, "Expected: a valid integer");
+                throw new ResponseException(400, "Expected: a valid integer\n");
             }
 
             if (!Objects.equals(color, "white")) {
                 if (!Objects.equals(color, "black")) {
-                    throw new ResponseException(400, "Expected: [WHITE|BLACK]");
+                    throw new ResponseException(400, "Expected: [WHITE|BLACK]\n");
                 }
             }
             if (gameNumber > currentGames.size()) {
-                throw new ResponseException(400, "Expected: valid <ID>");
+                throw new ResponseException(400, "Expected: valid <ID>\n");
             }
 
             int gameID = currentGames.get(gameNumber-1).gameID();
@@ -124,7 +124,7 @@ public class Postlogin {
 
             return ("Successfully joined " + gameName);
         }
-        throw new ResponseException(400, "Expected: <ID> [WHITE|BLACK]");
+        throw new ResponseException(400, "Expected: <ID> [WHITE|BLACK]\n");
     }
 
     private String observe(String... params) throws ResponseException {

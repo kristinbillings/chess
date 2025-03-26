@@ -47,13 +47,13 @@ public class Client {
                 result = postloginState.evaluate(userInput, preloginState.getAuth());
                 if (result.contains("Successfully logged out.")) {
                     state = State.SIGNEDOUT;
-                    System.out.print(PreloginMenu());
+                    result += "\n\n" + PreloginMenu();
 
                 }
                 System.out.print(result);
             }
         }
-
+        System.out.print("\nGoodbye");
     }
 
     private static void drawChessBoard() {
@@ -63,8 +63,7 @@ public class Client {
 
     public String PreloginMenu() {
         return """
-                Welcome to chess!
-                                
+                Welcome to chess!           
                 - login <USERNAME> <PASSWORD>  --  login to play
                 - register <USERNAME> <PASSWORD> <EMAIL>  --  register to begin playing
                 - quit  --  exits chess program
@@ -76,8 +75,7 @@ public class Client {
 
     public String PostloginMenu() {
         return """
-                What would you like to do?
-                            
+                \nWhat would you like to do?       
                 - create <NAME>  --  create a new game
                 - list  --  list of all the games currently open
                 - join <ID> [WHITE|BLACK]  --  join a game and play
