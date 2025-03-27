@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
-
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
-
+import exceptions.ResponseException;
 
 
 import service.UserService;

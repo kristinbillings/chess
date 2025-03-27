@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.RegisterRequest;
 import results.RegisterResult;
+import exceptions.ResponseException;
 
 public class RegisterTests {
     private UserService userService;

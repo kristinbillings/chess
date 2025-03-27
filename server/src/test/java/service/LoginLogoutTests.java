@@ -11,6 +11,7 @@ import requests.RegisterRequest;
 import results.LoginResult;
 import results.RegisterResult;
 import results.LogoutResult;
+import exceptions.ResponseException;
 
 public class LoginLogoutTests {
     private UserService userService;
