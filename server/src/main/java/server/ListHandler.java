@@ -2,14 +2,13 @@ package server;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.ResponseException;
-import requests.GameNameRequest;
 import requests.ListRequest;
 import results.ListResult;
 import service.GameService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import exceptions.ResponseException;
 
 public class ListHandler implements Route {
     private GameService gameService;

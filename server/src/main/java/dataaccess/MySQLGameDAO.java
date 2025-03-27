@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import exceptions.ResponseException;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
 
 public class MySQLGameDAO implements GameDAO {
     // create storage for all the data

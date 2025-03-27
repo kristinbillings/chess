@@ -1,7 +1,7 @@
 import chess.*;
 import dataaccess.DataAccessException;
-import dataaccess.ResponseException;
 import server.Server;
+import exceptions.ResponseException;
 
 public class Main {
     public static void main(String[] args) throws ResponseException, DataAccessException {

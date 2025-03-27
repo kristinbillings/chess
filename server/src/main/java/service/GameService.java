@@ -11,6 +11,7 @@ import results.CreateResult;
 import results.GameResult;
 import results.ListResult;
 import results.JoinResult;
+import exceptions.ResponseException;
 
 import java.util.*;
 

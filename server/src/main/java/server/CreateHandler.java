@@ -3,7 +3,6 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
-import dataaccess.ResponseException;
 import requests.CreateRequest;
 import requests.GameNameRequest;
 import results.CreateResult;
@@ -12,6 +11,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import java.util.Objects;
+import exceptions.ResponseException;
 
 public class CreateHandler implements Route {
     private GameService gameService;

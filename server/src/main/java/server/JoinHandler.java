@@ -3,7 +3,6 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
-import dataaccess.ResponseException;
 import requests.ColorGameIDRequest;
 import requests.JoinRequest;
 import results.JoinResult;
@@ -11,6 +10,7 @@ import service.GameService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import exceptions.ResponseException;
 
 import java.util.Objects;
 

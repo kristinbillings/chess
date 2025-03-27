@@ -2,11 +2,12 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
-import dataaccess.ResponseException;
 import service.UserService;
 import spark.*;
 import requests.RegisterRequest;
 import results.RegisterResult;
+import exceptions.ResponseException;
+
 
 public class RegisterHandler implements Route {
     private UserService userService;

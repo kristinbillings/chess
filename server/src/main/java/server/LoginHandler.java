@@ -3,13 +3,13 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
-import dataaccess.ResponseException;
 import service.UserService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import requests.LoginRequest;
 import results.LoginResult;
+import exceptions.ResponseException;
 
 public class LoginHandler implements Route {
     private UserService userService;

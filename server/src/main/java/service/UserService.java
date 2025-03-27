@@ -7,6 +7,7 @@ import requests.*;
 import results.*;
 
 import java.util.UUID;
+import exceptions.ResponseException;
 
 public class UserService {
     //private MemoryUserDAO userDAO;

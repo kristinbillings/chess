@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import model.UserData;
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
+import exceptions.ResponseException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;

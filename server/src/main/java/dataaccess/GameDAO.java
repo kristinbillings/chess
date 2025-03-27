@@ -2,6 +2,7 @@ package dataaccess;
 
 import model.AuthData;
 import model.GameData;
+import exceptions.ResponseException;
 
 import java.util.Map;
 

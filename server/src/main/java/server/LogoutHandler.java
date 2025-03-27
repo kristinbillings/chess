@@ -3,13 +3,13 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.ErrorStatusMessage;
-import dataaccess.ResponseException;
 import requests.LogoutRequest;
 import results.LogoutResult;
 import service.UserService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import exceptions.ResponseException;
 
 public class LogoutHandler implements Route {
     private UserService userService;
