@@ -1,7 +1,7 @@
 package net;
 import requests.*;
 import results.*;
-import ui.ResponseException;
+import ResponseException;
 
 public class ServerFacade {
     //this contains login register this will have 7 methods

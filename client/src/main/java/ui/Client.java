@@ -1,15 +1,8 @@
 package ui;
 
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.Scanner;
 
-import static ui.EscapeSequences.*;
-
-import ui.ChessBoard;
 import net.ServerFacade;
-import chess.ChessPiece;
 
 
 public class Client {
@@ -28,7 +21,7 @@ public class Client {
     }
 
     public void run() {
-        System.out.print(PreloginMenu());
+        System.out.print(preloginMenu());
         Scanner scanner = new Scanner(System.in);
 
         var result = "";
@@ -40,14 +33,14 @@ public class Client {
                 if (result.contains("uccessful")) {
                     state = State.SIGNEDIN;
                     postloginState = new Postlogin(serverUrl);
-                    System.out.print(PostloginMenu());
+                    System.out.print(postloginMenu());
 
                 }
             } else if (state == State.SIGNEDIN) {
                 result = postloginState.evaluate(userInput, preloginState.getAuth());
                 if (result.contains("Successfully logged out.")) {
                     state = State.SIGNEDOUT;
-                    result += "\n\n" + PreloginMenu();
+                    result += "\n\n" + preloginMenu();
                 }
                 System.out.print(result);
             }
@@ -60,7 +53,7 @@ public class Client {
         ChessBoard.drawChessBoard("WHITE"); //change this later to be a variable passed in
     }
 
-    public String PreloginMenu() {
+    public String preloginMenu() {
         return """
                 Welcome to chess!           
                 - login <USERNAME> <PASSWORD>  --  login to play
@@ -72,7 +65,7 @@ public class Client {
                 """;
     }
 
-    public String PostloginMenu() {
+    public String postloginMenu() {
         return """
                 \nWhat would you like to do?       
                 - create <NAME>  --  create a new game
@@ -87,9 +80,9 @@ public class Client {
 
     public String help() {
         if (state == State.SIGNEDOUT) {
-            return PreloginMenu();
+            return preloginMenu();
         }
-        return PostloginMenu();
+        return postloginMenu();
     }
 
 }
