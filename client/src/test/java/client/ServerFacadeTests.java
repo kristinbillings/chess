@@ -1,6 +1,6 @@
 package client;
 
-import ResponseException;
+import exceptions.ResponseException;
 import net.ServerFacade;
 import org.junit.jupiter.api.*;
 import requests.*;

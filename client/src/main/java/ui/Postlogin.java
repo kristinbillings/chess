@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.ResponseException;
 import net.ServerFacade;
 import requests.*;
 import results.*;
