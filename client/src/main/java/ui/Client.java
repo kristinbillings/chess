@@ -51,7 +51,9 @@ public class Client {
                     System.out.print(postloginMenu());
                 } else if (result.contains("joined") | result.contains("Observing")) {
                     gameStatus = GameStatus.INGAME;
-                    //gamePlayState = new GamePlay(serverUrl);
+                    gamePlayState = new GamePlay(serverUrl);
+                    result = gamePlayState.evaluate(userInput);
+
                     //bro
                 }
                 System.out.print(result);
