@@ -13,9 +13,7 @@ public class Client {
     private GameStatus gameStatus = GameStatus.OUTGAME;
     private Prelogin preloginState;
     private Postlogin postloginState;
-    private String authToken;
-    private List<String> existingRegisters;
-
+    private GamePlay gamePlayState;
 
     public Client(String serverUrl) {
         ServerFacade server = new ServerFacade(serverUrl);
@@ -53,6 +51,8 @@ public class Client {
                     System.out.print(postloginMenu());
                 } else if (result.contains("joined") | result.contains("Observing")) {
                     gameStatus = GameStatus.INGAME;
+                    //gamePlayState = new GamePlay(serverUrl);
+                    //bro
                 }
                 System.out.print(result);
             }
