@@ -2,7 +2,6 @@ package server;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.ErrorStatusMessage;
 import dataaccess.ResponseException;
 import requests.GameNameRequest;
 import requests.ListRequest;
@@ -11,8 +10,6 @@ import service.GameService;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.Objects;
 
 public class ListHandler implements Route {
     private GameService gameService;

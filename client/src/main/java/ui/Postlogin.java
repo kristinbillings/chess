@@ -1,6 +1,5 @@
 package ui;
 
-import dataaccess.ResponseException;
 import net.ServerFacade;
 import requests.*;
 import results.*;

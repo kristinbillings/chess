@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.*;
 import results.*;
-import service.GameService;
-import service.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;

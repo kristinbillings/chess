@@ -6,7 +6,6 @@ import model.AuthData;
 import requests.*;
 import results.*;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class UserService {

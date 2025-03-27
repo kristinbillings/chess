@@ -11,8 +11,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.Objects;
-
 public class LogoutHandler implements Route {
     private UserService userService;
 

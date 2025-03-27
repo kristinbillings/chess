@@ -11,8 +11,6 @@ import spark.Route;
 import requests.LoginRequest;
 import results.LoginResult;
 
-import java.util.Objects;
-
 public class LoginHandler implements Route {
     private UserService userService;
 

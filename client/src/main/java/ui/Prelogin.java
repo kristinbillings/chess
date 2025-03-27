@@ -1,7 +1,6 @@
 package ui;
 
 import dataaccess.ResponseException;
-import model.AuthData;
 import net.ServerFacade;
 import requests.LoginRequest;
 import requests.RegisterRequest;
