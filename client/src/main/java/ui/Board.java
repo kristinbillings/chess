@@ -73,10 +73,6 @@ public class Board {
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_GREEN);
         out.print(player);
-        //out.print(RESET_BG_COLOR);
-
-        //setBlack(out);
-
     }
 
     private static void drawRowOfSquares(PrintStream out, ChessBoard squares, String playerColor) {
