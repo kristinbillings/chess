@@ -132,14 +132,11 @@ public class Postlogin {
             String gameName = currentGames.get(gameNumber-1).gameName();
 
             //does not pass in the board now, but this is easily changed for later
-            System.out.print("Successfully joined " + gameName);
-            System.out.print("\nYou can leave the game by typing \"quit\"\n");
-
             Board.drawChessBoard(color);
             System.out.print("\nYou can leave the game by typing \"quit\"\n");
 
 
-            return ("Successfully joined " + gameName);
+            return ("Successfully joined \"" + gameName + "\"\n\n");
         }
         throw new ResponseException(400, "Expected: <ID> [WHITE|BLACK]\n");
     }
@@ -161,14 +158,11 @@ public class Postlogin {
 
             String gameName = currentGames.get(gameNumber-1).gameName();
 
-            System.out.print(gameName);
-
             //does not pass in the board now, but this is easily changed for later
             Board.drawChessBoard("WHITE");
-
             System.out.print("\nYou can leave the game by typing \"quit\" at any time\n");
 
-            return ("\tObserving " + gameName + " game");
+            return ("\tObserving \"" + gameName + "\" game\n\n");
         }
         throw new ResponseException(400, "Expected: <ID> ");
     }

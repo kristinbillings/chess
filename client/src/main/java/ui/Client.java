@@ -48,7 +48,8 @@ public class Client {
                     result += "\n\n" + preloginMenu();
                 } else if (gameStatus == GameStatus.INGAME && result.contains("quit")) {
                     gameStatus = GameStatus.OUTGAME;
-                    result = "leaving game";
+                    System.out.print("leaving game\n\n");
+                    result = "";
                     System.out.print(postloginMenu());
                 } else if (result.contains("joined") | result.contains("Observing")) {
                     gameStatus = GameStatus.INGAME;
