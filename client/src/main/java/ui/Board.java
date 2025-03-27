@@ -51,15 +51,16 @@ public class Board {
         String[] headers = {};
 
         if (Objects.equals(playerColor, "WHITE")) {
-            headers = new String[]{"  a ", " b ", " c ", " d ", " e ", " f ", " g ", " h "};
+            headers = new String[]{"  a ", " b ", " c ", " d ", " e ", " f ", " g ", " h  "};
         } else if (Objects.equals(playerColor, "BLACK")) {
-            headers = new String[]{"  h ", " g ", " f ", " e ", " d "," c "," b "," a "};
+            headers = new String[]{"  h ", " g ", " f ", " e ", " d "," c "," b "," a  "};
         }
-        //out.print(RESET_BG_COLOR);
+        setBlack(out);
         out.print(EMPTY.repeat(2));
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
         }
+        out.print(EMPTY.repeat(2));
         out.print(RESET_BG_COLOR);
         out.println();
     }
