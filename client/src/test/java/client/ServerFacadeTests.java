@@ -40,6 +40,7 @@ public class ServerFacadeTests {
     @BeforeEach
     public void clearDatabase() throws ResponseException {
         serverFacade.clear();
+
     }
 
     @Test
