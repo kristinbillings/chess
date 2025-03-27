@@ -51,7 +51,7 @@ public class Postlogin {
 
             return ("Successfully created a game called: " + gameName);
         }
-        throw new ResponseException(400, "Expected: <NAME>");
+        throw new ResponseException(400, "Expected: <NAME>\n");
     }
 
     private String list(String... params) throws ResponseException {
@@ -90,7 +90,7 @@ public class Postlogin {
             output += "---------------------------------------------------\n";
             return output;
         }
-        throw new ResponseException(400, "Expected: nothing after \"list\"");
+        throw new ResponseException(400, "Expected: nothing after \"list\"\n");
     }
 
     private String join(String... params) throws ResponseException {
@@ -115,7 +115,7 @@ public class Postlogin {
                 color = "BLACK";
             }
 
-            if (gameNumber > currentGames.size()+1) {
+            if (gameNumber > currentGames.size() | gameNumber <= 0) {
                 throw new ResponseException(400, "Expected: valid <ID>\n");
             }
 
@@ -147,11 +147,11 @@ public class Postlogin {
             try {
                 gameNumber = Integer.parseInt(params[0]);
             } catch (NumberFormatException e) {
-                throw new ResponseException(400, "Expected: valid <ID>");
+                throw new ResponseException(400, "Expected: valid <ID>\n");
             }
 
-            if (gameNumber > currentGames.size()) {
-                throw new ResponseException(400, "Expected: valid <ID>");
+            if (gameNumber > currentGames.size() | gameNumber <= 0) {
+                throw new ResponseException(400, "Expected: valid <ID>\n");
             }
 
             int gameID = currentGames.get(gameNumber-1).gameID();
@@ -164,7 +164,7 @@ public class Postlogin {
 
             return ("\tObserving \"" + gameName + "\" game\n\n");
         }
-        throw new ResponseException(400, "Expected: <ID> ");
+        throw new ResponseException(400, "Expected: <ID> \n");
     }
 
     private String logout(String... params) throws ResponseException {
@@ -174,7 +174,7 @@ public class Postlogin {
 
             return ("Successfully logged out.");
         }
-        throw new ResponseException(400, "Expected: nothing after \"logout\"");
+        throw new ResponseException(400, "Expected: nothing after \"logout\"\n");
     }
 
     private String help(String cmd) throws ResponseException {

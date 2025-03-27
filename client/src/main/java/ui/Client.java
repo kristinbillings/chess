@@ -57,7 +57,7 @@ public class Client {
                 System.out.print(result);
             }
         }
-        System.out.print("\nGoodbye");
+        System.out.print("\nGoodbye\n");
     }
 
     private static void drawChessBoard() {

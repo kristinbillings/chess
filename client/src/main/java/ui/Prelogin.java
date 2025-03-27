@@ -66,7 +66,7 @@ public class Prelogin {
             }
             return "Successful login!\n";
         }
-        throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD>");
+        throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD>\n");
     }
 
     private String register(String... params) throws ResponseException {
@@ -91,7 +91,7 @@ public class Prelogin {
 
             return "User successfully registered!\n";
         }
-        throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>");
+        throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>\n");
     }
 
     private String help(String cmd) throws ResponseException {
