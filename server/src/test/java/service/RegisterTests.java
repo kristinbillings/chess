@@ -45,7 +45,7 @@ public class RegisterTests {
     public void testInvalidRegistration() throws DataAccessException,ResponseException {
         RegisterRequest request = new RegisterRequest(null,"urmom","hottie@gmail.com");
 
-        Assertions.assertThrows(dataaccess.ResponseException.class, () -> {
+        Assertions.assertThrows(ResponseException.class, () -> {
             userService.register(request);
         }, "Error: unable to update user");
     }
