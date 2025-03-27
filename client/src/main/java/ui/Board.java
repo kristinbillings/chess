@@ -3,15 +3,15 @@ package ui;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import chess.ChessBoard;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Random;
 
 import static ui.EscapeSequences.*;
 
-public class ChessBoard {
+public class Board {
     // Board dimensions.
     private static final int BOARD_SIZE_IN_SQUARES = 8;
     private static final int SQUARE_SIZE_IN_PADDED_CHARS = 2;
@@ -26,53 +26,14 @@ public class ChessBoard {
     private static final String P = " P ";
 
     //just here for this phase
-    private static ChessPiece[][] squares = new ChessPiece[8][8];
-    public static void addPiece(ChessPosition position, ChessPiece piece) {
-        squares[position.getRow()-1][position.getColumn()-1] = piece;
-    }
-    public static void resetBoard() {
-        /* make a new piece, us add piece to add it to a specific location
-         */
-        addPiece(new ChessPosition(1,1),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK));
-        addPiece(new ChessPosition(1,2),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT));
-        addPiece(new ChessPosition(1,3),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
-        addPiece(new ChessPosition(1,4),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.QUEEN));
-        addPiece(new ChessPosition(1,5),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING));
-        addPiece(new ChessPosition(1,6),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
-        addPiece(new ChessPosition(1,7),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT));
-        addPiece(new ChessPosition(1,8),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK));
-        addPiece(new ChessPosition(2,1),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,2),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,3),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,4),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,5),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,6),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,7),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(2,8),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
+    private static ChessBoard squares = new ChessBoard();
 
-        addPiece(new ChessPosition(8,1),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK));
-        addPiece(new ChessPosition(8,2),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT));
-        addPiece(new ChessPosition(8,3),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP));
-        addPiece(new ChessPosition(8,4),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN));
-        addPiece(new ChessPosition(8,5),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING));
-        addPiece(new ChessPosition(8,6),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP));
-        addPiece(new ChessPosition(8,7),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT));
-        addPiece(new ChessPosition(8,8),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK));
-        addPiece(new ChessPosition(7,1),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,2),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,3),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,4),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,5),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,6),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,7),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-        addPiece(new ChessPosition(7,8),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-
-    }
 
     public static void drawChessBoard(String playerColor) {
         //removed the variable to pass in just for this phase
         //       , ChessPiece[][] squares
-        resetBoard();
+
+        squares.resetBoard();
 
         //draws it in a certain orientation depending on if white, black, or observer(white)
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -111,7 +72,7 @@ public class ChessBoard {
         setBlack(out);
     }
 
-    private static void drawRowOfSquares(PrintStream out, ChessPiece[][] squares, String playerColor) {
+    private static void drawRowOfSquares(PrintStream out, ChessBoard squares, String playerColor) {
         int rowChange = 8;
         int sidey = 0;
         if (Objects.equals(playerColor, "BLACK")) {
@@ -119,12 +80,12 @@ public class ChessBoard {
             sidey = 1;
         }
 
-        for (int squareRow = 0; squareRow < BOARD_SIZE_IN_SQUARES; ++squareRow) {
+        for (int squareRow = 1; squareRow < BOARD_SIZE_IN_SQUARES+1; ++squareRow) {
             out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS / 2));
             printHeaderText(out, String.valueOf(Math.abs(squareRow-rowChange)+sidey));
             out.print(EMPTY.repeat(1));
 
-            for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
+            for (int boardCol = 1; boardCol < BOARD_SIZE_IN_SQUARES+1; ++boardCol) {
                 int row = squareRow;
                 int col = boardCol;
                 if (rowChange == 0) {
@@ -142,11 +103,11 @@ public class ChessBoard {
                     out.print(SET_BG_COLOR_DARK_GREEN);
                 }
 
-                if (squares[row][col] == null) {
+                if (squares.getPiece(new ChessPosition(row,col)) == null) {
                     out.print(EMPTY.repeat(1));
                 } else {
-                    ChessPiece.PieceType pieceType = squares[row][col].getPieceType();
-                    ChessGame.TeamColor pieceColor = squares[row][col].getTeamColor();
+                    ChessPiece.PieceType pieceType = squares.getPiece(new ChessPosition(row,col)).getPieceType();
+                    ChessGame.TeamColor pieceColor = squares.getPiece(new ChessPosition(row,col)).getTeamColor();
                     printPlayer(out, pieceType, pieceColor);
                 }
                 setBlack(out);
@@ -189,7 +150,7 @@ public class ChessBoard {
     //for right now, remove later
     //for checking my code while writing it
     void main() {
-        resetBoard();
+        //resetBoard();
         drawChessBoard("WHITE");
     }
 }
