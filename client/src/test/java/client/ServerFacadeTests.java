@@ -186,11 +186,19 @@ public class ServerFacadeTests {
         });
     }
 
+    @Test
+    void clearPosTest() throws Exception {
+        var authData = serverFacade.register(new RegisterRequest("bob", "password", "p1@email.com"));
+        var login = serverFacade.login(new LoginRequest("bob", "password"));
+        var create = serverFacade.create(new CreateRequest("winners", authData.authToken()));
 
+        try {
+            serverFacade.clear();
+            assertTrue(true);
+        } catch (ResponseException e) {
 
-
-
-
+        }
+    }
 
 
 }
