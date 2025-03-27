@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import net.ServerFacade;
@@ -9,9 +10,12 @@ public class Client {
     //gets input and then goes to pre- or post-login class
     private final String serverUrl;
     private State state = State.SIGNEDOUT;
+    private GameStatus gameStatus = GameStatus.OUTGAME;
     private Prelogin preloginState;
     private Postlogin postloginState;
     private String authToken;
+    private List<String> existingRegisters;
+
 
     public Client(String serverUrl) {
         ServerFacade server = new ServerFacade(serverUrl);
@@ -32,6 +36,7 @@ public class Client {
                 System.out.print(result);
                 if (result.contains("uccessful")) {
                     state = State.SIGNEDIN;
+                    gameStatus = GameStatus.OUTGAME;
                     postloginState = new Postlogin(serverUrl);
                     System.out.print(postloginMenu());
 
@@ -41,6 +46,12 @@ public class Client {
                 if (result.contains("Successfully logged out.")) {
                     state = State.SIGNEDOUT;
                     result += "\n\n" + preloginMenu();
+                } else if (gameStatus == GameStatus.INGAME && result.contains("quit")) {
+                    gameStatus = GameStatus.OUTGAME;
+                    result = "leaving game";
+                    System.out.print(postloginMenu());
+                } else if (result.contains("joined") | result.contains("Observing")) {
+                    gameStatus = GameStatus.INGAME;
                 }
                 System.out.print(result);
             }

@@ -122,15 +122,22 @@ public class Postlogin {
             int gameID = currentGames.get(gameNumber-1).gameID();
 
             JoinRequest request = new JoinRequest(authToken,color,gameID);
-            JoinResult result = serverFacade.join(request);
+
+            try {
+                JoinResult result = serverFacade.join(request);
+            } catch(ResponseException e) {
+                throw new ResponseException(400, "Player spot not available, try another one.\n");
+            }
 
             String gameName = currentGames.get(gameNumber-1).gameName();
 
             //does not pass in the board now, but this is easily changed for later
-
+            System.out.print("Successfully joined " + gameName);
             System.out.print("\nYou can leave the game by typing \"quit\"\n");
 
             Board.drawChessBoard(color);
+            System.out.print("\nYou can leave the game by typing \"quit\"\n");
+
 
             return ("Successfully joined " + gameName);
         }
@@ -139,7 +146,12 @@ public class Postlogin {
 
     private String observe(String... params) throws ResponseException {
         if (params.length == 1) {
-            var gameNumber = Integer.parseInt(params[0]);
+            int gameNumber = 0;
+            try {
+                gameNumber = Integer.parseInt(params[0]);
+            } catch (NumberFormatException e) {
+                throw new ResponseException(400, "Expected: valid <ID>");
+            }
 
             if (gameNumber > currentGames.size()) {
                 throw new ResponseException(400, "Expected: valid <ID>");
@@ -149,11 +161,14 @@ public class Postlogin {
 
             String gameName = currentGames.get(gameNumber-1).gameName();
 
-            System.out.print("\nYou can leave the game by typing \"quit\"\n");
+            System.out.print(gameName);
+
             //does not pass in the board now, but this is easily changed for later
             Board.drawChessBoard("WHITE");
 
-            return ("Successfully observing " + gameNumber + " " + gameName);
+            System.out.print("\nYou can leave the game by typing \"quit\" at any time\n");
+
+            return ("\tObserving " + gameName + " game");
         }
         throw new ResponseException(400, "Expected: <ID> ");
     }

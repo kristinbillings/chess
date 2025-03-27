@@ -31,7 +31,7 @@ public class Board {
 
     public static void drawChessBoard(String playerColor) {
         //removed the variable to pass in just for this phase
-        //       , ChessPiece[][] squares
+        // it was this -->      , ChessPiece[][] squares
 
         squares.resetBoard();
 
@@ -42,6 +42,9 @@ public class Board {
         drawHeaders(out,playerColor);
         drawRowOfSquares(out, squares, playerColor);
         drawHeaders(out,playerColor);
+        out.print(ERASE_SCREEN);
+
+        out.print(RESET_TEXT_COLOR);
     }
 
     private static void drawHeaders(PrintStream out, String playerColor) {
@@ -52,11 +55,12 @@ public class Board {
         } else if (Objects.equals(playerColor, "BLACK")) {
             headers = new String[]{"  h ", " g ", " f ", " e ", " d "," c "," b "," a "};
         }
-
+        //out.print(RESET_BG_COLOR);
         out.print(EMPTY.repeat(2));
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
         }
+        out.print(RESET_BG_COLOR);
         out.println();
     }
 
@@ -68,8 +72,10 @@ public class Board {
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_GREEN);
         out.print(player);
+        //out.print(RESET_BG_COLOR);
 
-        setBlack(out);
+        //setBlack(out);
+
     }
 
     private static void drawRowOfSquares(PrintStream out, ChessBoard squares, String playerColor) {
@@ -81,19 +87,25 @@ public class Board {
         }
 
         for (int squareRow = 1; squareRow < BOARD_SIZE_IN_SQUARES+1; ++squareRow) {
+            setBlack(out);
             out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS / 2));
-            printHeaderText(out, String.valueOf(Math.abs(squareRow-rowChange)+sidey));
+
+            int addNum = -1;
+            if (rowChange == 8) {
+                addNum = 1;
+            }
+            int number = Integer.valueOf(String.valueOf(Math.abs(squareRow-rowChange)+sidey)) +addNum;
+
+            printHeaderText(out, String.valueOf(number));
             out.print(EMPTY.repeat(1));
 
             for (int boardCol = 1; boardCol < BOARD_SIZE_IN_SQUARES+1; ++boardCol) {
                 int row = squareRow;
                 int col = boardCol;
                 if (rowChange == 0) {
-                    row = Math.abs(row - 7);
-                    col = Math.abs(col - 7);
+                    row = Math.abs(row - 9);
+                    col = Math.abs(col - 9);
                 }
-
-                setBlack(out);
 
                 if(row%2 == 0 && col%2 == 0) {
                     out.print(SET_BG_COLOR_WHITE);
@@ -113,9 +125,14 @@ public class Board {
                 setBlack(out);
             }
             out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS / 2));
-            printHeaderText(out, String.valueOf(Math.abs(squareRow-rowChange)+sidey));
+
+            number = Integer.valueOf(String.valueOf(Math.abs(squareRow-rowChange)+sidey)) +addNum;
+
+            printHeaderText(out, String.valueOf(number));
             out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS / 2));
-            setBlack(out);
+            out.print(RESET_BG_COLOR);
+
+            //setBlack(out);
 
             out.println();
         }
