@@ -24,7 +24,6 @@ public class GamePlay {
                 case "leave" -> leave(params);
                 case "move" -> move(params);
                 case "resign" -> resign(params);
-
                 case "quit" -> "quit";
                 default -> help(cmd);
             };
@@ -56,7 +55,7 @@ public class GamePlay {
 
     private String resign(String... params) throws ResponseException {
         if (params.length == 0) {
-            return ("\tThis is where the userresignd'\n\n");
+            return ("\tThis is where the user resigns'\n\n");
         }
         throw new ResponseException(400, "Did not resign\n");
     }

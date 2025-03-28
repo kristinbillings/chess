@@ -37,26 +37,32 @@ public class Client {
                     gameStatus = GameStatus.OUTGAME;
                     postloginState = new Postlogin(serverUrl);
                     System.out.print(postloginMenu());
-
                 }
-            } else if (state == State.SIGNEDIN) {
+            } else if (state == State.SIGNEDIN && gameStatus == GameStatus.OUTGAME) {
                 result = postloginState.evaluate(userInput, preloginState.getAuth());
                 if (result.contains("Successfully logged out.")) {
                     state = State.SIGNEDOUT;
                     result += "\n\n" + preloginMenu();
-                } else if (gameStatus == GameStatus.INGAME && result.contains("quit")) {
-                    gameStatus = GameStatus.OUTGAME;
-                    System.out.print("leaving game\n\n");
-                    result = "";
-                    System.out.print(postloginMenu());
                 } else if (result.contains("joined") | result.contains("Observing")) {
                     gameStatus = GameStatus.INGAME;
                     gamePlayState = new GamePlay(serverUrl);
-                    result = gamePlayState.evaluate(userInput);
-
+                    System.out.print(inGameMenu());
                     //bro
                 }
                 System.out.print(result);
+            } else if (gameStatus == GameStatus.INGAME) {
+                result = gamePlayState.evaluate(userInput);
+                if (result.equals("quit")) {
+                    gameStatus = GameStatus.OUTGAME;
+                    System.out.print("\nLEAVING GAME\n\n");
+                    result = "o";
+                    System.out.print("Main Menu:" + postloginMenu());
+                } else {
+                    result = gamePlayState.evaluate(userInput);
+                    System.out.print(result);
+                    //result = "";
+                    //System.out.print(inGameMenu());
+                }
             }
         }
         System.out.print("\nGoodbye\n");
@@ -90,6 +96,18 @@ public class Client {
                 - help  --  lists options
                 - quit  --  quit playing chess
                 """;
+    }
+
+    public String inGameMenu() {
+        return """
+                \nPossible Actions:
+                - redraw  --  redraws game board
+                - leave  --  removes you from the game
+                - move <> <>  --  makes a move on your board
+                - resign  --  forfeits and ends game
+                - help  --  lists possible actions
+                - quit  --  quit playing chess
+                 """;
     }
 
     public String help() {
