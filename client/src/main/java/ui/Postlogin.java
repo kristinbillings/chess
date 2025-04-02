@@ -133,8 +133,7 @@ public class Postlogin {
 
             //does not pass in the board now, but this is easily changed for later
             Board.drawChessBoard(color);
-            System.out.print("\nYou can leave the game by typing \"quit\"\n");
-
+            //System.out.print("\nYou can leave the game by typing \"quit\"\n");
 
             return ("Successfully joined \"" + gameName + "\"\n\n");
         }
@@ -160,7 +159,7 @@ public class Postlogin {
 
             //does not pass in the board now, but this is easily changed for later
             Board.drawChessBoard("WHITE");
-            System.out.print("\nYou can leave the game by typing \"quit\" at any time\n");
+            //System.out.print("\nYou can leave the game by typing \"quit\" at any time\n");
 
             return ("\tObserving \"" + gameName + "\" game\n\n");
         }
